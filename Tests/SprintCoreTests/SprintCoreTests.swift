@@ -2,6 +2,17 @@ import XCTest
 @testable import SprintCore
 
 final class SprintCoreTests: XCTestCase {
+    func testPlaybackSelectionHandlesSeekingAndDoesNotBridgePoseGaps() {
+        let timestamps = [0.0, 0.04, 0.08, 2.0, 2.04]
+        XCTAssertEqual(PlaybackSampleSelector.index(at: 2.03, in: timestamps), 4)
+        XCTAssertEqual(PlaybackSampleSelector.index(at: 0.045, in: timestamps), 1)
+        XCTAssertNil(PlaybackSampleSelector.index(at: 1, in: timestamps))
+        XCTAssertNil(PlaybackSampleSelector.index(at: 3, in: timestamps))
+        XCTAssertNil(PlaybackSampleSelector.index(at: -.infinity, in: timestamps))
+        XCTAssertNil(PlaybackSampleSelector.index(at: -0.01, in: timestamps))
+        XCTAssertNil(PlaybackSampleSelector.index(at: 0, in: []))
+    }
+
     func testConfirmedBoundariesExcludeDebounceDelayAndIgnoreBriefDropout() {
         var machine = SprintStateMachine(startThreshold: 3, stopThreshold: 2)
         XCTAssertNil(machine.update(isSprinting: true, timestamp: 1))

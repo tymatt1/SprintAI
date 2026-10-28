@@ -2,8 +2,12 @@ import CoreImage
 import MediaPipeTasksVision
 import UIKit
 
-/// Renders in upright UIKit coordinates and measures visible right-side joints.
+/// Renders in upright UIKit coordinates and measures visible joints on the selected side.
 final class AnnotationDrawer {
+    private let side: AnalysisSide
+
+    init(side: AnalysisSide = .right) { self.side = side }
+
     private let context = CIContext()
     private let connections = PoseLandmark.connections.filter {
         !Set(0...10).union(17...22).contains($0.startIndex) &&
@@ -34,14 +38,14 @@ final class AnnotationDrawer {
                 drawing.strokePath()
             }
             if measurement != nil {
-                let hip = midpoint(points[23], points[24])
-                let shoulder = midpoint(points[11], points[12])
+                let hip = points[side.hip]
+                let shoulder = points[side.shoulder]
                 drawing.setStrokeColor(UIColor.systemTeal.cgColor)
                 drawing.move(to: hip)
                 drawing.addLine(to: shoulder)
                 drawing.strokePath()
                 drawing.setFillColor(UIColor.systemTeal.cgColor)
-                for point in [points[24], points[26]] {
+                for point in [points[side.hip], points[side.knee]] {
                     drawing.fillEllipse(in: CGRect(x: point.x - 4, y: point.y - 4, width: 8, height: 8))
                 }
             }
@@ -58,24 +62,22 @@ final class AnnotationDrawer {
     }
 
     private func angles(landmarks: [NormalizedLandmark], points: [CGPoint], timestamp: Double) -> AngleData? {
-        guard [11, 12, 23, 24, 26, 28].allSatisfy({ isVisible(landmarks[$0]) }) else { return nil }
+        guard [side.shoulder, side.hip, side.knee, side.ankle].allSatisfy({ isVisible(landmarks[$0]) }) else { return nil }
         func angle(_ a: CGPoint, _ b: CGPoint, _ c: CGPoint) -> CGFloat? {
             JointGeometry.angle(a: .init(x: a.x, y: a.y), b: .init(x: b.x, y: b.y), c: .init(x: c.x, y: c.y)).map { CGFloat($0) }
         }
-        let hip = midpoint(points[23], points[24])
-        let shoulder = midpoint(points[11], points[12])
+        let hip = points[side.hip]
+        let shoulder = points[side.shoulder]
         guard let torso = angle(shoulder, hip, CGPoint(x: hip.x, y: hip.y - 100)),
-              let knee = angle(points[24], points[26], points[28]),
-              let hipAngle = angle(points[12], points[24], points[26]) else { return nil }
+              let knee = angle(points[side.hip], points[side.knee], points[side.ankle]),
+              let hipAngle = angle(points[side.shoulder], points[side.hip], points[side.knee]) else { return nil }
         return AngleData(timestamp: timestamp, hipAngle: hipAngle, kneeAngle: knee, torsoAngle: torso)
     }
 
     private func isVisible(_ landmark: NormalizedLandmark) -> Bool {
         landmark.x.isFinite && landmark.y.isFinite &&
+        (0...1).contains(landmark.x) && (0...1).contains(landmark.y) &&
         (landmark.visibility?.doubleValue ?? 1) >= 0.5 && (landmark.presence?.doubleValue ?? 1) >= 0.5
     }
 
-    private func midpoint(_ a: CGPoint, _ b: CGPoint) -> CGPoint {
-        CGPoint(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
-    }
 }

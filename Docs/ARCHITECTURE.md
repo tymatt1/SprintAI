@@ -30,9 +30,9 @@ A session identifier rejects callbacks from an earlier recording. Leaving timing
 
 `VideoProcessor` owns a reader, writer, landmarker, renderer, and local angle list for each job. It bakes the source orientation into upright frames, checks reader/writer failures, honors cancellation, and removes partial output on failure. Only completed exports are returned to the view model. Export is silent; source audio is not copied.
 
-`AnnotationDrawer` calculates confidence-filtered right-side joint angles and draws the skeleton. Degenerate geometry produces no measurement. `AnalysisViewModel` guards updates by video identity, owns cancellable tasks, and removes app-owned temporary files when a video is cleared.
+`AnnotationDrawer` calculates confidence-filtered camera-side joint angles and draws the skeleton. Degenerate geometry produces no measurement. `AnalysisViewModel` guards updates by video identity, owns cancellable tasks, and removes app-owned temporary files when a video is cleared.
 
-Playback observations have an owned token removed on deinitialization. Displayed angle rows are derived from current playback time, so seeking and loading another clip do not reuse an old timestamp set.
+Playback observations have an owned token removed on deinitialization. Displayed measurements use a binary search for the nearest sample within 100 ms of playback time. Missing detections remain gaps, and seeking does not carry old measurements forward. The player view is identified by its export URL so its observer is recreated for each video.
 
 ## Feedback
 

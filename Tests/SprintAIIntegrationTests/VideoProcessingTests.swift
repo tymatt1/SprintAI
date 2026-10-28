@@ -67,6 +67,13 @@ final class VideoProcessingTests: XCTestCase {
         var hidden = landmarks
         hidden[26] = NormalizedLandmark(x: 0.5, y: 0.5, z: 0, visibility: 0.1, presence: 1)
         XCTAssertNil(drawer.drawAnnotations(imageBuffer: source, poseLandmarks: [hidden], timestamp: 0).1)
+        hidden[26] = NormalizedLandmark(x: 1.2, y: 0.5, z: 0, visibility: 1, presence: 1)
+        XCTAssertNil(drawer.drawAnnotations(imageBuffer: source, poseLandmarks: [hidden], timestamp: 0).1)
+        // Right-side occlusion must not prevent a valid left-side analysis.
+        let left = AnnotationDrawer(side: .left)
+        XCTAssertNotNil(left.drawAnnotations(imageBuffer: source, poseLandmarks: [hidden], timestamp: 0).1)
+        hidden[25] = NormalizedLandmark(x: 0.5, y: 0.5, z: 0, visibility: 0.1, presence: 1)
+        XCTAssertNil(left.drawAnnotations(imageBuffer: source, poseLandmarks: [hidden], timestamp: 0).1)
     }
 
     func testRecordColorsRoundTripAndLegacyGrayscaleDecodes() throws {

@@ -11,7 +11,7 @@ struct ProcessedVideo: Sendable {
 
 /// One processor per job. No player/UI state is shared with the processing executor.
 enum VideoProcessor {
-    static func process(url: URL, progress: @escaping @Sendable (Double) -> Void) async throws -> ProcessedVideo {
+    static func process(url: URL, side: AnalysisSide = .right, progress: @escaping @Sendable (Double) -> Void) async throws -> ProcessedVideo {
         let asset = AVURLAsset(url: url)
         guard let track = try await asset.loadTracks(withMediaType: .video).first else {
             throw ProcessingError.message("This file has no video track.")
@@ -23,6 +23,7 @@ enum VideoProcessor {
         let naturalSize = try await track.load(.naturalSize)
         let transform = try await track.load(.preferredTransform)
         let frameRate = try await track.load(.nominalFrameRate)
+        let progressStride = frameRate.isFinite && frameRate > 0 ? max(1, Int(min(frameRate, 1000) / 10)) : 3
         let bounds = CGRect(origin: .zero, size: naturalSize).applying(transform)
         let width = Int(abs(bounds.width).rounded())
         let height = Int(abs(bounds.height).rounded())
@@ -38,7 +39,7 @@ enum VideoProcessor {
         options.runningMode = .video
         options.numPoses = 1
         let landmarker = try PoseLandmarker(options: options)
-        let drawer = AnnotationDrawer()
+        let drawer = AnnotationDrawer(side: side)
         let context = CIContext()
         let reader = try AVAssetReader(asset: asset)
         let output = AVAssetReaderTrackOutput(track: track, outputSettings: [
@@ -88,6 +89,9 @@ enum VideoProcessor {
                     throw ProcessingError.message("A video frame could not be decoded.")
                 }
                 let presentation = CMSampleBufferGetPresentationTimeStamp(sample)
+                guard presentation.isNumeric, presentation.seconds.isFinite else {
+                    throw ProcessingError.message("This video contains an invalid frame timestamp.")
+                }
                 if origin == nil { origin = presentation }
                 let time = presentation - origin!
                 let timestampMs = Int((time.seconds * 1000).rounded())
@@ -114,7 +118,7 @@ enum VideoProcessor {
                 if let measurement { angles.append(measurement) }
                 frameCount += 1
                 // Publish at most ~10 updates per second of source footage.
-                if frameCount % max(1, Int(frameRate / 10)) == 0 {
+                if frameCount % progressStride == 0 {
                     progress(min(time.seconds / duration, 0.99))
                 }
             }

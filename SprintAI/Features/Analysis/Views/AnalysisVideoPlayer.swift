@@ -15,6 +15,7 @@ struct AnalysisVideoPlayer: View {
 
     var body: some View {
         VideoPlayer(player: player)
+            .onAppear { onTimeChange(player.currentTime().seconds) }
             .onChange(of: observer.time) { _, time in onTimeChange(time) }
     }
 }
@@ -26,7 +27,7 @@ private final class PlaybackTimeObserver: ObservableObject {
 
     init(player: AVPlayer) {
         self.player = player
-        token = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: .main) { [weak self] time in
+        token = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1.0 / 30, preferredTimescale: 600), queue: .main) { [weak self] time in
             self?.time = time.seconds
         }
     }

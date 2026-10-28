@@ -3,6 +3,8 @@ import SwiftUI
 
 @MainActor
 final class AnalysisViewModel: ObservableObject {
+    @Published var analysisSide: AnalysisSide = .right
+    @Published private(set) var measuredSide: AnalysisSide = .right
     @Published var selectedVideoURL: URL?
     @Published private(set) var annotatedVideoPlayer: AVPlayer?
     @Published private(set) var annotatedVideoURL: URL?
@@ -28,6 +30,7 @@ final class AnalysisViewModel: ObservableObject {
     private var feedbackTask: Task<Void, Never>?
     private var videoID = UUID()
     private var feedbackID = UUID()
+    private var measurementTimes: [Double] = []
     private var sourceVideoURL: URL?
     private var aspectRatio: CGFloat = 16 / 9
 
@@ -36,9 +39,11 @@ final class AnalysisViewModel: ObservableObject {
         sourceVideoURL = url
         isProcessing = true
         let jobID = videoID
+        let side = analysisSide
+        measuredSide = side
         processingTask = Task { [weak self] in
             do {
-                let result = try await VideoProcessor.process(url: url) { [weak self] progress in
+                let result = try await VideoProcessor.process(url: url, side: side) { [weak self] progress in
                     Task { @MainActor [weak self] in
                         guard self?.videoID == jobID else { return }
                         self?.progress = progress
@@ -50,6 +55,7 @@ final class AnalysisViewModel: ObservableObject {
                 }
                 self.annotatedVideoURL = result.url
                 self.angleDataList = result.angles
+                self.measurementTimes = result.angles.map(\.timestamp)
                 self.aspectRatio = result.aspectRatio
                 try Task.checkCancellation()
                 guard self.videoID == jobID else { return }
@@ -65,10 +71,10 @@ final class AnalysisViewModel: ObservableObject {
     }
 
     func updatePlaybackTime(_ time: Double) {
-        // A pure projection of playback time avoids duplicate rows and handles seeking/new videos.
-        var seenBuckets = Set<Int>()
-        displayedAngleData = angleDataList.filter {
-            $0.timestamp <= time && seenBuckets.insert(Int($0.timestamp * 10)).inserted
+        if let index = PlaybackSampleSelector.index(at: time, in: measurementTimes) {
+            displayedAngleData = [angleDataList[index]]
+        } else {
+            displayedAngleData = []
         }
     }
 
@@ -81,6 +87,7 @@ final class AnalysisViewModel: ObservableObject {
         let requestID = UUID()
         feedbackID = requestID
         let angles = angleDataList
+        let side = measuredSide
         feedbackTask = Task { [weak self] in
             do {
                 self?.setStage(.extracting, .running)
@@ -89,7 +96,7 @@ final class AnalysisViewModel: ObservableObject {
                 guard let self, self.feedbackID == requestID else { return }
                 self.setStage(.extracting, .done)
                 self.setStage(.sending, .running)
-                let feedback = try await FeedbackClient().generate(frames: frames, context: Self.context(for: angles))
+                let feedback = try await FeedbackClient().generate(frames: frames, context: Self.context(for: angles, side: side))
                 try Task.checkCancellation()
                 guard self.feedbackID == requestID else { return }
                 self.feedbackText = feedback
@@ -131,6 +138,7 @@ final class AnalysisViewModel: ObservableObject {
         sourceVideoURL = nil
         annotatedVideoURL = nil
         if !preservingSelection { selectedVideoURL = nil }
+        measurementTimes = []
         angleDataList = []
         displayedAngleData = []
         feedbackText = nil
@@ -147,14 +155,14 @@ final class AnalysisViewModel: ObservableObject {
         stageStatuses[stage] = status
     }
 
-    private static func context(for angles: [AngleData]) -> String? {
+    private static func context(for angles: [AngleData], side: AnalysisSide) -> String? {
         guard !angles.isEmpty else { return nil }
         func summary(_ values: [CGFloat]) -> String {
             let mean = values.reduce(0, +) / CGFloat(values.count)
             return String(format: "mean %.1f°, range %.1f–%.1f°", mean, values.min()!, values.max()!)
         }
         return """
-        2D side-view measurements; hip and knee use the right leg. These are estimates, not calibrated biomechanics.
+        2D side-view measurements; hip, knee, and torso use the \(side.rawValue.lowercased()) side. These are estimates, not calibrated biomechanics.
         Torso angle from vertical: \(summary(angles.map(\.torsoAngle))).
         Hip interior angle: \(summary(angles.map(\.hipAngle))).
         Knee interior angle: \(summary(angles.map(\.kneeAngle))).

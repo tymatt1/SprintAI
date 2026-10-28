@@ -28,15 +28,15 @@ The task bundle contains `pose_detector.tflite` and `pose_landmarks_detector.tfl
 
 The ZIP container hash differs from the downloaded bundle, but the two contained model files are identical. The bundled pose weights are therefore documented as Google's standard model, rather than a custom-trained sprint-form model. Sprint-specific geometry, visualization, frame selection, and coaching integration are application code.
 
-MediaPipe is pinned to 0.10.18 while this recovered app is stabilized. A dependency upgrade should be tested separately against the same fixtures and real sprint videos. See [Google's pose model card](https://storage.googleapis.com/mediapipe-assets/Model%20Card%20BlazePose%20GHUM%203D.pdf) and [third-party notices](../../THIRD_PARTY_NOTICES.md).
+The official pose guide still lists the same version-1 full-pose weights used by this app (checked October 28, 2026). Replacing those identical weights would not modernize pose estimation. The iOS SDK is now pinned to MediaPipeTasksVision 1.0.0, the latest version listed in the CocoaPods registry at this check. It replaces 0.10.18 and passes the hosted inference, annotation, export, and cancellation fixtures on iOS 27. Model weights and SDK versions are tracked separately; this upgrade does not claim measured pose-accuracy gains. See the [official 1.0.0 release](https://github.com/google-ai-edge/mediapipe/releases/tag/v1.0.0). See [Google's pose model card](https://storage.googleapis.com/mediapipe-assets/Model%20Card%20BlazePose%20GHUM%203D.pdf) and [third-party notices](../../THIRD_PARTY_NOTICES.md).
 
 ## Angle definitions
 
-- Hip: shoulder–hip–knee interior angle on the athlete's right side.
-- Knee: hip–knee–ankle interior angle on the right side.
-- Torso: angle between the shoulder/hip midpoint line and image vertical.
+- Hip: shoulder–hip–knee interior angle on the camera-facing side selected before import.
+- Knee: hip–knee–ankle interior angle on the same selected side.
+- Torso: angle between the selected shoulder–hip line and image vertical. This no longer requires the far-side shoulder and hip to be visible.
 
-These are image-plane angles, not 3D biomechanical measurements. The renderer rejects low-visibility/presence joints and degenerate geometry. Camera angle, occlusion, image distortion, motion blur, and clothing still affect the result. A single angle is not intrinsically good or bad; stride phase and context matter.
+These are image-plane angles, not 3D biomechanical measurements. The renderer rejects out-of-frame and low-visibility/presence joints and degenerate geometry. Camera angle, occlusion, image distortion, motion blur, and clothing still affect the result. A single angle is not intrinsically good or bad; stride phase and context matter.
 
 ## Evaluation work still needed
 
