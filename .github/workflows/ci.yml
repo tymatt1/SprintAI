@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-and-backend:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check public repository contents
+        run: python3 Scripts/check_repository.py --history
+      - name: Test timing and geometry
+        run: swift test
+      - name: Test feedback gateway without API calls
+        run: python3 -m unittest discover -s Backend -v
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Install pinned CocoaPods tooling and dependencies
+        run: |
+          gem install cocoapods -v 1.16.2 --no-document
+          pod install --deployment
+      - name: Select an available iPhone simulator
+        run: |
+          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(v["udid"] for vs in d["devices"].values() for v in vs if "iPhone" in v["name"]))')
+          echo "SPRINTAI_SIMULATOR=$DEVICE_ID" >> "$GITHUB_ENV"
+      - name: Build and run iOS integration tests
+        run: >-
+          xcodebuild test
+          -workspace SprintAI.xcworkspace
+          -scheme SprintAI
+          -destination "platform=iOS Simulator,id=$SPRINTAI_SIMULATOR"
+          -derivedDataPath build
+          CODE_SIGNING_ALLOWED=NO

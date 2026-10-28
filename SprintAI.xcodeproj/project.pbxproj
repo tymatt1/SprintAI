@@ -1,0 +1,880 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0017A834A62C126E303F98E0 /* Color+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F13F6AEEC8F43D510F4977 /* Color+Codable.swift */; };
+		0631C49C5E139507B9B81A75 /* KeyframeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFFB666ADC64F36D432B030 /* KeyframeSelector.swift */; };
+		085F858427283972D619192C /* set.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE8F46A874B97622BA73DD17 /* set.mp3 */; };
+		09063C562976D476CC86ED3C /* FeedbackClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B641F5FCD95A9F40E4FE747 /* FeedbackClient.swift */; };
+		0D51065C9FB33EC1F06596B5 /* gun.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DAB8BB9A2A2CE18EF80A394A /* gun.mp3 */; };
+		0DD585886F159CA9A690003A /* FeedbackInlinePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4737EAB402FD886367DFB184 /* FeedbackInlinePanel.swift */; };
+		1758DE7C2634AB11645A5AA9 /* SprintChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B219B8067C87214F31127160 /* SprintChartView.swift */; };
+		3DE3E440A37EE71325BB88E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9B4A89AEADCD17DBCBC0B79 /* Assets.xcassets */; };
+		474B7A61753A4E1F2876EBF7 /* FeedbackFrameExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDF4F80524C257D7CAD5BD5 /* FeedbackFrameExtractor.swift */; };
+		584C874AD1065BDD72F89E4C /* AngleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C27091B8F701BA8F050CE36 /* AngleData.swift */; };
+		6AC9BFA28C4B0E185DF43F8D /* AnalysisVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB57CA0168F69F0C86A4EE7D /* AnalysisVideoPlayer.swift */; };
+		6B5D4B4C59A348BAF6590C54 /* FeedbackSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E1A155E5230C20CF5049A5 /* FeedbackSettingsView.swift */; };
+		6E442F85FAA85BFB598F01ED /* SprintTimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4DBD432AD89FED86E6DD93 /* SprintTimerViewModel.swift */; };
+		6F870FE216831A6C4BB05339 /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762C397EF6E533E6C37BD899 /* VideoProcessor.swift */; };
+		780FD41DA90AF7FB55FC378D /* pose_landmarker_full.task in Resources */ = {isa = PBXBuildFile; fileRef = 7AD31089F6DB993BB56E6816 /* pose_landmarker_full.task */; };
+		79217EB49ED6EF5DCF8744B8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 224E2478C8DFD64E0684ECD2 /* PrivacyInfo.xcprivacy */; };
+		7D27D2861475465C631EDB1B /* MotionClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C19713F1C755EE6F78710C7 /* MotionClassifier.swift */; };
+		7E26271C560F42D520F63888 /* AxisDomainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9ED389A80DACDA0B2B86D3 /* AxisDomainHelper.swift */; };
+		7EC1EEED883442518367F143 /* FeedbackConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE327CAC076F9A64457A6018 /* FeedbackConfiguration.swift */; };
+		847E2DD8DA148EE20F652B9C /* AnnotationDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FBF36ED496A00E0E19DD90 /* AnnotationDrawer.swift */; };
+		88D1CDB1AA3A89EF8776A92C /* VideoSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D12D42FCF75EAE15E6ECAE /* VideoSaver.swift */; };
+		8C116F520FFACD8AC599D9D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FC92D39E623615F5B53703 /* ContentView.swift */; };
+		9453E4BF309D6451D2F1DB2B /* AngleCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF6BD795839609F3B366AA /* AngleCalloutView.swift */; };
+		A175C522C03A3FF47CE2DA86 /* SprintTimeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7C996F8D1D4BCA8374527C /* SprintTimeRecord.swift */; };
+		A779F9CD26A11BB1EE88647E /* SprintAIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3451D42AE3CC975D2920D26C /* SprintAIApp.swift */; };
+		A8BEF3E6160868BB9CCAF8BB /* OutlinedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56949B66C372FA1D30ADC04B /* OutlinedViews.swift */; };
+		A98DA557F992ADE3153526F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F0E1D91F04840503C43F669 /* Foundation.framework */; };
+		AD0B791F8CFDA1DAE3BC57E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F0E1D91F04840503C43F669 /* Foundation.framework */; };
+		B0A9866BE5DD6F363570A8C4 /* AnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4FBD726AB49CA5953B1D12 /* AnalysisViewModel.swift */; };
+		BCEFF553935D197BACA2CB1B /* on_your_marks.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27CCB63E0DBCD7C102BA148B /* on_your_marks.mp3 */; };
+		C000F7018124EB0D5FFBCBED /* PoseLandmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2997B7486AA96124ABA54379 /* PoseLandmark.swift */; };
+		C7717DC852E3857D0E6FDBDA /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C4E2139353A35705C3FA /* ControlPanelView.swift */; };
+		CD87D193C588938689437551 /* CircleSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D722E530E8D8CD257043AC7 /* CircleSymbol.swift */; };
+		CEF3015DA540FA5A5F18E80C /* Pods_SprintAIIntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A695F53E65D4CAFE2E070AA5 /* Pods_SprintAIIntegrationTests.framework */; };
+		CFC6A62BA0492E7382720053 /* SprintDetectionModel.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = E51F8789F78776E29756C749 /* SprintDetectionModel.mlpackage */; };
+		D13BD9C05CE49837202D90BC /* Pods_SprintAI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BED44C5D49D49D0BC305863C /* Pods_SprintAI.framework */; };
+		D41AA03E69EF689FC8A4FB6B /* TimingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96239202C49761A90A91201F /* TimingView.swift */; };
+		D75B5E49C9595C06A622E615 /* SprintStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998F75F81781C56C6B2B2588 /* SprintStateMachine.swift */; };
+		E1C27EB6DB7EAA14A6224891 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7B6E105BBFD29A1A2461C3 /* AnnotationView.swift */; };
+		E6EA8CBD58FF4F78E1A11674 /* RaceAudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6147DD3C9C67071ADE0B9803 /* RaceAudioController.swift */; };
+		EACF9B3B24A856B1C1802284 /* VideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E1FE03D569D19DFAB43C22 /* VideoPicker.swift */; };
+		FA9396AD7FA59E824220CFC5 /* JointGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A2BB1711DE4E0ABFEE0B48 /* JointGeometry.swift */; };
+		FECFB80F466028D7E700FB08 /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C14284F02414A0C10CFC3A2 /* AnalysisView.swift */; };
+		FF95A6430AA624F87BBE752E /* VideoProcessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEE001B56D5CEC2A84B3657 /* VideoProcessingTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B3D4F1FDF604D6073500A0C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6BFFD26C83560D094DB0D418 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 419537689D95E810EB1488F6;
+			remoteInfo = SprintAI;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00A2BB1711DE4E0ABFEE0B48 /* JointGeometry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JointGeometry.swift; sourceTree = "<group>"; };
+		010A767FD220EE0ED85E08D3 /* Pods-SprintAI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SprintAI.release.xcconfig"; path = "Target Support Files/Pods-SprintAI/Pods-SprintAI.release.xcconfig"; sourceTree = "<group>"; };
+		0B9EDB4793FCA4957E8AABE6 /* SprintAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SprintAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C27091B8F701BA8F050CE36 /* AngleData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AngleData.swift; sourceTree = "<group>"; };
+		1B641F5FCD95A9F40E4FE747 /* FeedbackClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackClient.swift; sourceTree = "<group>"; };
+		1C7B6E105BBFD29A1A2461C3 /* AnnotationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
+		224E2478C8DFD64E0684ECD2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		26E1FE03D569D19DFAB43C22 /* VideoPicker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoPicker.swift; sourceTree = "<group>"; };
+		27CCB63E0DBCD7C102BA148B /* on_your_marks.mp3 */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = audio.mp3; path = on_your_marks.mp3; sourceTree = "<group>"; };
+		2997B7486AA96124ABA54379 /* PoseLandmark.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PoseLandmark.swift; sourceTree = "<group>"; };
+		3451D42AE3CC975D2920D26C /* SprintAIApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SprintAIApp.swift; sourceTree = "<group>"; };
+		38D12D42FCF75EAE15E6ECAE /* VideoSaver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoSaver.swift; sourceTree = "<group>"; };
+		3D722E530E8D8CD257043AC7 /* CircleSymbol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CircleSymbol.swift; sourceTree = "<group>"; };
+		4737EAB402FD886367DFB184 /* FeedbackInlinePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackInlinePanel.swift; sourceTree = "<group>"; };
+		49330570BEF8D0C232A0D9EC /* Pods-SprintAIIntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SprintAIIntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-SprintAIIntegrationTests/Pods-SprintAIIntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4CDF4F80524C257D7CAD5BD5 /* FeedbackFrameExtractor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackFrameExtractor.swift; sourceTree = "<group>"; };
+		56949B66C372FA1D30ADC04B /* OutlinedViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OutlinedViews.swift; sourceTree = "<group>"; };
+		5C14284F02414A0C10CFC3A2 /* AnalysisView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
+		5C19713F1C755EE6F78710C7 /* MotionClassifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MotionClassifier.swift; sourceTree = "<group>"; };
+		6147DD3C9C67071ADE0B9803 /* RaceAudioController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RaceAudioController.swift; sourceTree = "<group>"; };
+		650878E040507AA3D823B61B /* Pods-SprintAIIntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SprintAIIntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-SprintAIIntegrationTests/Pods-SprintAIIntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
+		71E1A155E5230C20CF5049A5 /* FeedbackSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackSettingsView.swift; sourceTree = "<group>"; };
+		762C397EF6E533E6C37BD899 /* VideoProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoProcessor.swift; sourceTree = "<group>"; };
+		7A4DBD432AD89FED86E6DD93 /* SprintTimerViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SprintTimerViewModel.swift; sourceTree = "<group>"; };
+		7AD31089F6DB993BB56E6816 /* pose_landmarker_full.task */ = {isa = PBXFileReference; includeInIndex = 1; path = pose_landmarker_full.task; sourceTree = "<group>"; };
+		7D4FBD726AB49CA5953B1D12 /* AnalysisViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnalysisViewModel.swift; sourceTree = "<group>"; };
+		7F0E1D91F04840503C43F669 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		8EEE001B56D5CEC2A84B3657 /* VideoProcessingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoProcessingTests.swift; sourceTree = "<group>"; };
+		96239202C49761A90A91201F /* TimingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TimingView.swift; sourceTree = "<group>"; };
+		998F75F81781C56C6B2B2588 /* SprintStateMachine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SprintStateMachine.swift; sourceTree = "<group>"; };
+		A62110EB5450D36DE149C625 /* Pods-SprintAI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SprintAI.debug.xcconfig"; path = "Target Support Files/Pods-SprintAI/Pods-SprintAI.debug.xcconfig"; sourceTree = "<group>"; };
+		A695F53E65D4CAFE2E070AA5 /* Pods_SprintAIIntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SprintAIIntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6FC92D39E623615F5B53703 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B219B8067C87214F31127160 /* SprintChartView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SprintChartView.swift; sourceTree = "<group>"; };
+		B7FBF36ED496A00E0E19DD90 /* AnnotationDrawer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnnotationDrawer.swift; sourceTree = "<group>"; };
+		BE327CAC076F9A64457A6018 /* FeedbackConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackConfiguration.swift; sourceTree = "<group>"; };
+		BE8F46A874B97622BA73DD17 /* set.mp3 */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = audio.mp3; path = set.mp3; sourceTree = "<group>"; };
+		BED44C5D49D49D0BC305863C /* Pods_SprintAI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SprintAI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFEF6BD795839609F3B366AA /* AngleCalloutView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AngleCalloutView.swift; sourceTree = "<group>"; };
+		C5DDE7042CFFE01E029AEA90 /* SprintAIIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SprintAIIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC7C996F8D1D4BCA8374527C /* SprintTimeRecord.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SprintTimeRecord.swift; sourceTree = "<group>"; };
+		CEA4C4E2139353A35705C3FA /* ControlPanelView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
+		DAB8BB9A2A2CE18EF80A394A /* gun.mp3 */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = audio.mp3; path = gun.mp3; sourceTree = "<group>"; };
+		E51F8789F78776E29756C749 /* SprintDetectionModel.mlpackage */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.mlpackage; path = SprintDetectionModel.mlpackage; sourceTree = "<group>"; };
+		E9B4A89AEADCD17DBCBC0B79 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EA9ED389A80DACDA0B2B86D3 /* AxisDomainHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AxisDomainHelper.swift; sourceTree = "<group>"; };
+		EB57CA0168F69F0C86A4EE7D /* AnalysisVideoPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnalysisVideoPlayer.swift; sourceTree = "<group>"; };
+		F8F13F6AEEC8F43D510F4977 /* Color+Codable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Color+Codable.swift"; sourceTree = "<group>"; };
+		FEFFB666ADC64F36D432B030 /* KeyframeSelector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeyframeSelector.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		43A94EBEE1ED91D99E18711C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD0B791F8CFDA1DAE3BC57E7 /* Foundation.framework in Frameworks */,
+				CEF3015DA540FA5A5F18E80C /* Pods_SprintAIIntegrationTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF1474C5AD2BC6A4F66D97DD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A98DA557F992ADE3153526F4 /* Foundation.framework in Frameworks */,
+				D13BD9C05CE49837202D90BC /* Pods_SprintAI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E9DBE01743978F08B368AA5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CC7C996F8D1D4BCA8374527C /* SprintTimeRecord.swift */,
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0F67F46F735086471080456B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A6FC92D39E623615F5B53703 /* ContentView.swift */,
+				3451D42AE3CC975D2920D26C /* SprintAIApp.swift */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+		24983ACC7A4680AC0A38532D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5C19713F1C755EE6F78710C7 /* MotionClassifier.swift */,
+				6147DD3C9C67071ADE0B9803 /* RaceAudioController.swift */,
+			);
+			name = Services;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		29256F4E52CC213D64E7E06D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E9B4A89AEADCD17DBCBC0B79 /* Assets.xcassets */,
+				A5E9993B93052CE401DEB071 /* Audio */,
+				84389704327A08673C955291 /* Models */,
+				224E2478C8DFD64E0684ECD2 /* PrivacyInfo.xcprivacy */,
+			);
+			name = Resources;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2A7446426A7034BF3715209B /* SprintAI */ = {
+			isa = PBXGroup;
+			children = (
+				0F67F46F735086471080456B /* App */,
+				8DAEEE1AF1C8E8E7E9F65C4C /* Core */,
+				95BB7BC24492966CD5FA9747 /* Features */,
+				29256F4E52CC213D64E7E06D /* Resources */,
+				BAE73231A9B07F40F3ABA4B4 /* Shared */,
+			);
+			name = SprintAI;
+			path = SprintAI;
+			sourceTree = "<group>";
+		};
+		34786552E3EF89A436E0ACBC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				56949B66C372FA1D30ADC04B /* OutlinedViews.swift */,
+			);
+			name = UI;
+			path = UI;
+			sourceTree = "<group>";
+		};
+		36319A59FD98001207B1B0ED /* Timing */ = {
+			isa = PBXGroup;
+			children = (
+				0E9DBE01743978F08B368AA5 /* Models */,
+				24983ACC7A4680AC0A38532D /* Services */,
+				7A4DBD432AD89FED86E6DD93 /* SprintTimerViewModel.swift */,
+				EE992639399ABBEB79CA5C1E /* Views */,
+			);
+			name = Timing;
+			path = Timing;
+			sourceTree = "<group>";
+		};
+		3BD9D189CBA1A753FFC0DB0C = {
+			isa = PBXGroup;
+			children = (
+				9AF97E05D3D540BD5B7B99B2 /* Products */,
+				9A6B9379E728208BAC9C46F5 /* Frameworks */,
+				2A7446426A7034BF3715209B /* SprintAI */,
+				3EE63CF719EBB1EF84EBEFE8 /* Pods */,
+				A04F9E37642D17FB97AD4CA5 /* Integration Tests */,
+			);
+			sourceTree = "<group>";
+		};
+		3E83BD63D68C7C15AA4A45A1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F8F13F6AEEC8F43D510F4977 /* Color+Codable.swift */,
+			);
+			name = Extensions;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3EE63CF719EBB1EF84EBEFE8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				010A767FD220EE0ED85E08D3 /* Pods-SprintAI.release.xcconfig */,
+				A62110EB5450D36DE149C625 /* Pods-SprintAI.debug.xcconfig */,
+				650878E040507AA3D823B61B /* Pods-SprintAIIntegrationTests.release.xcconfig */,
+				49330570BEF8D0C232A0D9EC /* Pods-SprintAIIntegrationTests.debug.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		42EC786759941010F1CE9B6A /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				7D4FBD726AB49CA5953B1D12 /* AnalysisViewModel.swift */,
+				995F0843D73250B02F57E46C /* Models */,
+				C165D60B2653CB47DD3446BC /* Services */,
+				E6D52A46FB061BB6130E65A2 /* Views */,
+			);
+			name = Analysis;
+			path = Analysis;
+			sourceTree = "<group>";
+		};
+		84389704327A08673C955291 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E51F8789F78776E29756C749 /* SprintDetectionModel.mlpackage */,
+				7AD31089F6DB993BB56E6816 /* pose_landmarker_full.task */,
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8DAEEE1AF1C8E8E7E9F65C4C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				00A2BB1711DE4E0ABFEE0B48 /* JointGeometry.swift */,
+				FEFFB666ADC64F36D432B030 /* KeyframeSelector.swift */,
+				998F75F81781C56C6B2B2588 /* SprintStateMachine.swift */,
+			);
+			name = Core;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		95BB7BC24492966CD5FA9747 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				42EC786759941010F1CE9B6A /* Analysis */,
+				BCC120F3D12D72C7E713138E /* Feedback */,
+				36319A59FD98001207B1B0ED /* Timing */,
+			);
+			name = Features;
+			path = Features;
+			sourceTree = "<group>";
+		};
+		995F0843D73250B02F57E46C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0C27091B8F701BA8F050CE36 /* AngleData.swift */,
+				2997B7486AA96124ABA54379 /* PoseLandmark.swift */,
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		99834946B90DDA489611B3C6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9A6B9379E728208BAC9C46F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6D5B063D2E6EC450C5F17DB /* iOS */,
+				BED44C5D49D49D0BC305863C /* Pods_SprintAI.framework */,
+				A695F53E65D4CAFE2E070AA5 /* Pods_SprintAIIntegrationTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9AF97E05D3D540BD5B7B99B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0B9EDB4793FCA4957E8AABE6 /* SprintAI.app */,
+				C5DDE7042CFFE01E029AEA90 /* SprintAIIntegrationTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9BBA7630968453A98FA2AD15 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1B641F5FCD95A9F40E4FE747 /* FeedbackClient.swift */,
+				BE327CAC076F9A64457A6018 /* FeedbackConfiguration.swift */,
+			);
+			name = Services;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A04F9E37642D17FB97AD4CA5 /* Integration Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8EEE001B56D5CEC2A84B3657 /* VideoProcessingTests.swift */,
+			);
+			name = "Integration Tests";
+			path = Tests/SprintAIIntegrationTests;
+			sourceTree = "<group>";
+		};
+		A5E9993B93052CE401DEB071 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				DAB8BB9A2A2CE18EF80A394A /* gun.mp3 */,
+				27CCB63E0DBCD7C102BA148B /* on_your_marks.mp3 */,
+				BE8F46A874B97622BA73DD17 /* set.mp3 */,
+			);
+			name = Audio;
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		B2286AD22181486DC1146440 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4737EAB402FD886367DFB184 /* FeedbackInlinePanel.swift */,
+				71E1A155E5230C20CF5049A5 /* FeedbackSettingsView.swift */,
+			);
+			name = Views;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BAE73231A9B07F40F3ABA4B4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				3E83BD63D68C7C15AA4A45A1 /* Extensions */,
+				34786552E3EF89A436E0ACBC /* UI */,
+			);
+			name = Shared;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		BCC120F3D12D72C7E713138E /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				99834946B90DDA489611B3C6 /* Models */,
+				9BBA7630968453A98FA2AD15 /* Services */,
+				B2286AD22181486DC1146440 /* Views */,
+			);
+			name = Feedback;
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		C165D60B2653CB47DD3446BC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B7FBF36ED496A00E0E19DD90 /* AnnotationDrawer.swift */,
+				4CDF4F80524C257D7CAD5BD5 /* FeedbackFrameExtractor.swift */,
+				762C397EF6E533E6C37BD899 /* VideoProcessor.swift */,
+				38D12D42FCF75EAE15E6ECAE /* VideoSaver.swift */,
+			);
+			name = Services;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D6D5B063D2E6EC450C5F17DB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7F0E1D91F04840503C43F669 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		E6D52A46FB061BB6130E65A2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EB57CA0168F69F0C86A4EE7D /* AnalysisVideoPlayer.swift */,
+				5C14284F02414A0C10CFC3A2 /* AnalysisView.swift */,
+				BFEF6BD795839609F3B366AA /* AngleCalloutView.swift */,
+				26E1FE03D569D19DFAB43C22 /* VideoPicker.swift */,
+			);
+			name = Views;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EE992639399ABBEB79CA5C1E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1C7B6E105BBFD29A1A2461C3 /* AnnotationView.swift */,
+				EA9ED389A80DACDA0B2B86D3 /* AxisDomainHelper.swift */,
+				3D722E530E8D8CD257043AC7 /* CircleSymbol.swift */,
+				CEA4C4E2139353A35705C3FA /* ControlPanelView.swift */,
+				B219B8067C87214F31127160 /* SprintChartView.swift */,
+				96239202C49761A90A91201F /* TimingView.swift */,
+			);
+			name = Views;
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		419537689D95E810EB1488F6 /* SprintAI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5ACA1991A06DBEFD9ACBADAF /* Build configuration list for PBXNativeTarget "SprintAI" */;
+			buildPhases = (
+				EAABB80AB54705E66D24478B /* [CP] Check Pods Manifest.lock */,
+				856D25EEF075AA0F8A2F9713 /* Sources */,
+				FF1474C5AD2BC6A4F66D97DD /* Frameworks */,
+				935A498D0A5B83BB34B0A3ED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SprintAI;
+			productName = SprintAI;
+			productReference = 0B9EDB4793FCA4957E8AABE6 /* SprintAI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B4B9C668FB75145DFA70C4B2 /* SprintAIIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 356D4D2085933DB15374544D /* Build configuration list for PBXNativeTarget "SprintAIIntegrationTests" */;
+			buildPhases = (
+				57FB8B8966861F9810EBC685 /* [CP] Check Pods Manifest.lock */,
+				F3AE0C0EE5051DC29DD90F87 /* Sources */,
+				43A94EBEE1ED91D99E18711C /* Frameworks */,
+				0B664E3920E49CBE1F8563DB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				365380C4619F55E31184160B /* PBXTargetDependency */,
+			);
+			name = SprintAIIntegrationTests;
+			productName = SprintAIIntegrationTests;
+			productReference = C5DDE7042CFFE01E029AEA90 /* SprintAIIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6BFFD26C83560D094DB0D418 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = A8DC74DA5F4FAEE586695F10 /* Build configuration list for PBXProject "SprintAI" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3BD9D189CBA1A753FFC0DB0C;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9AF97E05D3D540BD5B7B99B2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				419537689D95E810EB1488F6 /* SprintAI */,
+				B4B9C668FB75145DFA70C4B2 /* SprintAIIntegrationTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0B664E3920E49CBE1F8563DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		935A498D0A5B83BB34B0A3ED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DE3E440A37EE71325BB88E2 /* Assets.xcassets in Resources */,
+				0D51065C9FB33EC1F06596B5 /* gun.mp3 in Resources */,
+				BCEFF553935D197BACA2CB1B /* on_your_marks.mp3 in Resources */,
+				085F858427283972D619192C /* set.mp3 in Resources */,
+				780FD41DA90AF7FB55FC378D /* pose_landmarker_full.task in Resources */,
+				79217EB49ED6EF5DCF8744B8 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		57FB8B8966861F9810EBC685 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SprintAIIntegrationTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EAABB80AB54705E66D24478B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SprintAI-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		856D25EEF075AA0F8A2F9713 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C116F520FFACD8AC599D9D2 /* ContentView.swift in Sources */,
+				A779F9CD26A11BB1EE88647E /* SprintAIApp.swift in Sources */,
+				FA9396AD7FA59E824220CFC5 /* JointGeometry.swift in Sources */,
+				0631C49C5E139507B9B81A75 /* KeyframeSelector.swift in Sources */,
+				D75B5E49C9595C06A622E615 /* SprintStateMachine.swift in Sources */,
+				B0A9866BE5DD6F363570A8C4 /* AnalysisViewModel.swift in Sources */,
+				584C874AD1065BDD72F89E4C /* AngleData.swift in Sources */,
+				C000F7018124EB0D5FFBCBED /* PoseLandmark.swift in Sources */,
+				847E2DD8DA148EE20F652B9C /* AnnotationDrawer.swift in Sources */,
+				474B7A61753A4E1F2876EBF7 /* FeedbackFrameExtractor.swift in Sources */,
+				6F870FE216831A6C4BB05339 /* VideoProcessor.swift in Sources */,
+				88D1CDB1AA3A89EF8776A92C /* VideoSaver.swift in Sources */,
+				6AC9BFA28C4B0E185DF43F8D /* AnalysisVideoPlayer.swift in Sources */,
+				FECFB80F466028D7E700FB08 /* AnalysisView.swift in Sources */,
+				9453E4BF309D6451D2F1DB2B /* AngleCalloutView.swift in Sources */,
+				EACF9B3B24A856B1C1802284 /* VideoPicker.swift in Sources */,
+				09063C562976D476CC86ED3C /* FeedbackClient.swift in Sources */,
+				7EC1EEED883442518367F143 /* FeedbackConfiguration.swift in Sources */,
+				0DD585886F159CA9A690003A /* FeedbackInlinePanel.swift in Sources */,
+				6B5D4B4C59A348BAF6590C54 /* FeedbackSettingsView.swift in Sources */,
+				A175C522C03A3FF47CE2DA86 /* SprintTimeRecord.swift in Sources */,
+				7D27D2861475465C631EDB1B /* MotionClassifier.swift in Sources */,
+				E6EA8CBD58FF4F78E1A11674 /* RaceAudioController.swift in Sources */,
+				6E442F85FAA85BFB598F01ED /* SprintTimerViewModel.swift in Sources */,
+				E1C27EB6DB7EAA14A6224891 /* AnnotationView.swift in Sources */,
+				7E26271C560F42D520F63888 /* AxisDomainHelper.swift in Sources */,
+				CD87D193C588938689437551 /* CircleSymbol.swift in Sources */,
+				C7717DC852E3857D0E6FDBDA /* ControlPanelView.swift in Sources */,
+				1758DE7C2634AB11645A5AA9 /* SprintChartView.swift in Sources */,
+				D41AA03E69EF689FC8A4FB6B /* TimingView.swift in Sources */,
+				CFC6A62BA0492E7382720053 /* SprintDetectionModel.mlpackage in Sources */,
+				0017A834A62C126E303F98E0 /* Color+Codable.swift in Sources */,
+				A8BEF3E6160868BB9CCAF8BB /* OutlinedViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3AE0C0EE5051DC29DD90F87 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF95A6430AA624F87BBE752E /* VideoProcessingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		365380C4619F55E31184160B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SprintAI;
+			target = 419537689D95E810EB1488F6 /* SprintAI */;
+			targetProxy = B3D4F1FDF604D6073500A0C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		46BC3BAA481543E5D40BD045 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A62110EB5450D36DE149C625 /* Pods-SprintAI.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SprintAI/App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SprintAI;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewt.SprintTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		46DDAC3C9CC8B6A2F09BC950 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 010A767FD220EE0ED85E08D3 /* Pods-SprintAI.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SprintAI/App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SprintAI;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewt.SprintTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		845559E6349C7F943310CF29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A794D4648DEB6641F398106B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 650878E040507AA3D823B61B /* Pods-SprintAIIntegrationTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewt.SprintAI.IntegrationTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SprintAI.app/SprintAI";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C862DEAB939110F8751F2B89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CB735289B2611F01CEFFF7C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 49330570BEF8D0C232A0D9EC /* Pods-SprintAIIntegrationTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewt.SprintAI.IntegrationTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SprintAI.app/SprintAI";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		356D4D2085933DB15374544D /* Build configuration list for PBXNativeTarget "SprintAIIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A794D4648DEB6641F398106B /* Release */,
+				CB735289B2611F01CEFFF7C9 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5ACA1991A06DBEFD9ACBADAF /* Build configuration list for PBXNativeTarget "SprintAI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46DDAC3C9CC8B6A2F09BC950 /* Release */,
+				46BC3BAA481543E5D40BD045 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8DC74DA5F4FAEE586695F10 /* Build configuration list for PBXProject "SprintAI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				845559E6349C7F943310CF29 /* Debug */,
+				C862DEAB939110F8751F2B89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6BFFD26C83560D094DB0D418 /* Project object */;
+}
