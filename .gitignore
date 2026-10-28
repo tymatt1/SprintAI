@@ -1,0 +1,18 @@
+# Generated dependencies and build products
+Pods/
+.build/
+DerivedData/
+build/
+*.xcresult
+# Local archives, data, secrets and machine-specific Xcode state
+.local/
+.DS_Store
+xcuserdata/
+*.xcuserstate
+.env
+.env.*
+!.env.example
+*.local.xcconfig
+__pycache__/
+*.pyc
+.swiftpm/
