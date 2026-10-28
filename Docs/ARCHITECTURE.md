@@ -20,9 +20,9 @@ flowchart LR
 
 ## Timing
 
-`MotionClassifier` owns Core Motion and inference on one serial operation queue. Device motion supplies a single timestamp for acceleration and rotation. Gravity is added back to user acceleration to preserve the previous gravity-inclusive input convention. Normalization and thresholds are kept with the model integration.
+`MotionClassifier` owns Core Motion and inference on one serial operation queue. Device motion supplies a single timestamp for acceleration and rotation. Gravity is added back to user acceleration to preserve the previous gravity-inclusive input convention. Timestamp-based interpolation provides a uniform 50 Hz input grid and resets on delivery gaps over 100 ms. Normalization and thresholds are kept with the model integration.
 
-`SprintStateMachine` is a platform-independent value type. It debounces positives and negatives, rejects nonmonotonic timestamps, and emits start/finish events. Durations use sensor time. The UI display uses monotonic uptime. There is no delayed reset that can interrupt a subsequent sprint.
+`SprintStateMachine` is a platform-independent value type. It debounces positives and negatives, rejects nonmonotonic timestamps, and emits start/finish events. Durations use sensor time, backdated to the first decision in each confirmed run so confirmation counts do not shift boundaries. The UI display uses monotonic uptime. There is no delayed reset that can interrupt a subsequent sprint.
 
 A session identifier rejects callbacks from an earlier recording. Leaving timing or backgrounding the app stops monitoring and discards an incomplete sprint. History keeps the existing `sprintTimes` UserDefaults key and Codable schema. A decode failure surfaces an error rather than silently replacing data.
 

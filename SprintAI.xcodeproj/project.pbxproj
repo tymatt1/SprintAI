@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F0123456789ABCDEF0123456 /* MotionResampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1123456789ABCDEF0123456; };
 		0017A834A62C126E303F98E0 /* Color+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F13F6AEEC8F43D510F4977 /* Color+Codable.swift */; };
 		0631C49C5E139507B9B81A75 /* KeyframeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFFB666ADC64F36D432B030 /* KeyframeSelector.swift */; };
 		085F858427283972D619192C /* set.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE8F46A874B97622BA73DD17 /* set.mp3 */; };
@@ -64,6 +65,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F1123456789ABCDEF0123456 /* MotionResampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionResampler.swift; sourceTree = "<group>"; };
 		00A2BB1711DE4E0ABFEE0B48 /* JointGeometry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JointGeometry.swift; sourceTree = "<group>"; };
 		010A767FD220EE0ED85E08D3 /* Pods-SprintAI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SprintAI.release.xcconfig"; path = "Target Support Files/Pods-SprintAI/Pods-SprintAI.release.xcconfig"; sourceTree = "<group>"; };
 		0B9EDB4793FCA4957E8AABE6 /* SprintAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SprintAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				00A2BB1711DE4E0ABFEE0B48 /* JointGeometry.swift */,
+				F1123456789ABCDEF0123456 /* MotionResampler.swift */,
 				FEFFB666ADC64F36D432B030 /* KeyframeSelector.swift */,
 				998F75F81781C56C6B2B2588 /* SprintStateMachine.swift */,
 			);
@@ -580,6 +583,7 @@
 				8C116F520FFACD8AC599D9D2 /* ContentView.swift in Sources */,
 				A779F9CD26A11BB1EE88647E /* SprintAIApp.swift in Sources */,
 				FA9396AD7FA59E824220CFC5 /* JointGeometry.swift in Sources */,
+				F0123456789ABCDEF0123456 /* MotionResampler.swift in Sources */,
 				0631C49C5E139507B9B81A75 /* KeyframeSelector.swift in Sources */,
 				D75B5E49C9595C06A622E615 /* SprintStateMachine.swift in Sources */,
 				B0A9866BE5DD6F363570A8C4 /* AnalysisViewModel.swift in Sources */,

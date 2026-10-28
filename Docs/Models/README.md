@@ -13,7 +13,7 @@ This is the project's custom exported sprint classifier. Its embedded conversion
 - The previous mean acceleration-magnitude gate `> 2` is retained.
 - Confirmation: five positive decisions to start, three negatives to finish.
 
-The refactor has **not** retrained, recalibrated, or revalidated this classifier. Core Motion delivery timing is requested rather than guaranteed. A gap over 100 ms clears the input window and active detection state. Short gaps and platform filtering can still affect input distributions.
+The refactor has **not** retrained, recalibrated, or revalidated this classifier. Core Motion delivery timing is requested rather than guaranteed. Timestamp-based linear interpolation now places samples on a 50 Hz grid. A gap over 100 ms or invalid feature values clears the input window and active detection state; interpolation never bridges that gap. This preprocessing change needs athlete/device evaluation against the original training distribution. Confirmation still requires five positive / three negative decisions, but event timestamps use the first decision in each confirmed run, removing confirmation-delay bias without claiming calibrated physical boundaries.
 
 Training scripts, split definitions, original TensorFlow checkpoints, conversion scripts, and held-out metrics were not present in the recovered folder. The original labeled CSV remains private and is not part of this repository. Its first stationary examples appear close to zero acceleration, so verifying whether training removed gravity is a priority before claiming reliable accuracy. The preprocessing convention is preserved rather than silently guessing a new one.
 
