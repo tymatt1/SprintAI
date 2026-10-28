@@ -51,8 +51,13 @@ final class VideoProcessingTests: XCTestCase {
     func testAnnotationPreservesImageOrientationAndRejectsOccludedMeasurements() throws {
         let source = try makeBuffer()
         let drawer = AnnotationDrawer()
-        let landmarks = (0..<33).map { index in
-            NormalizedLandmark(x: Float(index % 4 + 1) / 6, y: Float(index % 5 + 1) / 7, z: 0, visibility: 1, presence: 1)
+        var landmarks: [NormalizedLandmark] = []
+        for index in 0..<33 {
+            let x: Float = Float(index % 4 + 1) / 6.0
+            let y: Float = Float(index % 5 + 1) / 7.0
+            let confidence = NSNumber(value: 1.0)
+            let landmark = NormalizedLandmark(x: x, y: y, z: 0, visibility: confidence, presence: confidence)
+            landmarks.append(landmark)
         }
         let (output, measurement) = drawer.drawAnnotations(imageBuffer: source, poseLandmarks: [landmarks], timestamp: 0)
         XCTAssertNotNil(measurement)
