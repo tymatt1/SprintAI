@@ -6,6 +6,15 @@ import SwiftUI
 @testable import SprintAI
 
 final class VideoProcessingTests: XCTestCase {
+    @MainActor
+    func testBrandFontsAreBundledAndRegistered() throws {
+        for name in ["Barlow-Regular", "Barlow-Medium", "Barlow-SemiBold", "BarlowCondensed-Medium"] {
+            XCTAssertNotNil(Bundle.main.url(forResource: name, withExtension: "ttf"))
+            let font = try XCTUnwrap(UIFont(name: name, size: 17), "Missing brand font must not silently fall back")
+            XCTAssertTrue(font.familyName.hasPrefix("Barlow"))
+        }
+    }
+
     func testFeedbackFramesHaveStrictlyIncreasingActualTimestamps() async throws {
         let source = try await makeVideo(rotated: false)
         defer { try? FileManager.default.removeItem(at: source) }

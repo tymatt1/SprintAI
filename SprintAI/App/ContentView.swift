@@ -11,6 +11,8 @@ struct ContentView: View {
                 .tabItem { Label("Settings", systemImage: "gearshape") }
         }
         .tint(SprintTheme.accent)
-        .preferredColorScheme(.dark)
+        .font(SprintType.body)
+        .foregroundStyle(SprintTheme.ink)
+        .preferredColorScheme(.light)
     }
 }

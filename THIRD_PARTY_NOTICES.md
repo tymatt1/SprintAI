@@ -13,3 +13,8 @@ CocoaPods generates additional dependency acknowledgements during installation. 
 ## Project resources
 
 The custom sprint-detection model, app artwork, callout recordings, and Swift application sources were recovered from the author's existing SprintAI project. This repository does not assign them an open-source license. Confirm rights and choose a license before offering reuse permissions.
+
+## Barlow and Barlow Condensed
+
+Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow).
+Distributed under the SIL Open Font License 1.1. Font files are bundled unmodified from the official [Google Fonts repository](https://github.com/google/fonts). Full licenses are included in `SprintAI/Resources/Fonts/OFL-Barlow.txt` and `OFL-BarlowCondensed.txt` and copied into the app bundle.

@@ -1,22 +1,54 @@
 import SwiftUI
 
-/// Shared visual language for the training screens.
+/// A results-sheet palette: paper, ink, and one signal color.
 enum SprintTheme {
-    static let background = Color(red: 0.035, green: 0.055, blue: 0.085)
-    static let surface = Color(red: 0.075, green: 0.10, blue: 0.14)
-    static let accent = Color(red: 0.69, green: 0.96, blue: 0.32)
-    static let teal = Color(red: 0.25, green: 0.84, blue: 0.80)
+    static let background = Color(red: 0.965, green: 0.953, blue: 0.925)
+    static let ink = Color(red: 0.13, green: 0.14, blue: 0.13)
+    static let muted = Color(red: 0.39, green: 0.39, blue: 0.36)
+    static let accent = Color(red: 0.72, green: 0.20, blue: 0.11)
+    static let rule = Color(red: 0.81, green: 0.80, blue: 0.76)
+    // Kept during the screen migration; all surfaces use the same paper.
+    static let surface = background
+    static let teal = accent
 }
 
+enum SprintType {
+    static let body = Font.custom("Barlow-Regular", size: 17, relativeTo: .body)
+    static let detail = Font.custom("Barlow-Regular", size: 15, relativeTo: .subheadline)
+    static let label = Font.custom("Barlow-SemiBold", size: 16, relativeTo: .headline)
+    static let caption = Font.custom("Barlow-Medium", size: 12, relativeTo: .caption)
+    static let section = Font.custom("Barlow-Medium", size: 23, relativeTo: .title2)
+    static func display(_ size: CGFloat) -> Font {
+        .custom("BarlowCondensed-Medium", size: size, relativeTo: .largeTitle)
+    }
+}
+
+struct PrimaryActionStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(SprintType.label)
+            .padding(.horizontal, 20).padding(.vertical, 17)
+            .frame(minHeight: 54)
+            .foregroundStyle(SprintTheme.background)
+            .background(SprintTheme.ink.opacity(configuration.isPressed ? 0.82 : 1), in: RoundedRectangle(cornerRadius: 2))
+    }
+}
+
+struct TextActionStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.font(SprintType.label)
+            .foregroundStyle(SprintTheme.accent)
+            .frame(minHeight: 44)
+            .opacity(configuration.isPressed ? 0.6 : 1)
+    }
+}
+
+// Transitional open sections; removed when the screen migration is complete.
 struct TrainingCard<Content: View>: View {
     private let content: Content
     init(@ViewBuilder content: () -> Content) { self.content = content() }
     var body: some View {
-        content
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(SprintTheme.surface, in: RoundedRectangle(cornerRadius: 24))
-            .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(0.07)))
+        content.padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -26,10 +58,9 @@ struct TrainingHeader: View {
     let subtitle: String
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(eyebrow.uppercased()).font(.caption.weight(.bold)).tracking(2).foregroundStyle(SprintTheme.accent)
-            Text(title).font(.largeTitle.bold())
-            Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+            Text(eyebrow.uppercased()).font(SprintType.caption).tracking(1.2).foregroundStyle(SprintTheme.accent)
+            Text(title).font(SprintType.display(44))
+            Text(subtitle).font(SprintType.detail).foregroundStyle(SprintTheme.muted)
+        }.frame(maxWidth: .infinity, alignment: .leading)
     }
 }
