@@ -7,9 +7,6 @@ enum SprintTheme {
     static let muted = Color(red: 0.39, green: 0.39, blue: 0.36)
     static let accent = Color(red: 0.72, green: 0.20, blue: 0.11)
     static let rule = Color(red: 0.81, green: 0.80, blue: 0.76)
-    // Kept during the screen migration; all surfaces use the same paper.
-    static let surface = background
-    static let teal = accent
 }
 
 enum SprintType {
@@ -43,24 +40,49 @@ struct TextActionStyle: ButtonStyle {
     }
 }
 
-// Transitional open sections; removed when the screen migration is complete.
-struct TrainingCard<Content: View>: View {
-    private let content: Content
-    init(@ViewBuilder content: () -> Content) { self.content = content() }
+struct Workspace<Content: View>: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
+    let content: (CGFloat, Bool) -> Content
+    init(@ViewBuilder content: @escaping (CGFloat, Bool) -> Content) { self.content = content }
+
     var body: some View {
-        content.padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
+        GeometryReader { geometry in
+            let inset: CGFloat = geometry.size.width < 600 ? 24 : 40
+            let width = max(0, min(geometry.size.width, 1120) - inset * 2)
+            ScrollView {
+                content(width, width >= 740 && !typeSize.isAccessibilitySize)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, inset).padding(.top, 16).padding(.bottom, 40)
+                    .frame(maxWidth: 1120).frame(maxWidth: .infinity)
+            }
+            .scrollDismissesKeyboard(.interactively)
+            .background(SprintTheme.background)
+        }
+        .font(SprintType.body).foregroundStyle(SprintTheme.ink)
     }
 }
 
-struct TrainingHeader: View {
-    let eyebrow: String
-    let title: String
-    let subtitle: String
+struct Masthead<Actions: View>: View {
+    let actions: Actions
+    init(@ViewBuilder actions: () -> Actions) { self.actions = actions() }
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(eyebrow.uppercased()).font(SprintType.caption).tracking(1.2).foregroundStyle(SprintTheme.accent)
-            Text(title).font(SprintType.display(44))
-            Text(subtitle).font(SprintType.detail).foregroundStyle(SprintTheme.muted)
-        }.frame(maxWidth: .infinity, alignment: .leading)
+        HStack {
+            Text("SPRINTAI").font(SprintType.display(26)).tracking(1)
+                .accessibilityLabel("Sprint AI")
+            Spacer()
+            actions
+        }.frame(minHeight: 44)
     }
+}
+
+struct FieldCaption: View {
+    let text: String
+    init(_ text: String) { self.text = text }
+    var body: some View {
+        Text(text.uppercased()).font(SprintType.caption).tracking(0.9).foregroundStyle(SprintTheme.muted)
+    }
+}
+
+struct Hairline: View {
+    var body: some View { Rectangle().fill(SprintTheme.rule).frame(height: 0.5).accessibilityHidden(true) }
 }

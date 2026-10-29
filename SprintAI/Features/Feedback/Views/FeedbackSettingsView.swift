@@ -5,74 +5,101 @@ struct FeedbackSettingsView: View {
     @State private var endpoint = ""
     @State private var token = ""
     @State private var message: String?
-    @State private var succeeded = false
+    @State private var showRemoval = false
+    @FocusState private var focused: Field?
+    private enum Field { case endpoint, token }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    TrainingHeader(eyebrow: "SprintAI · Preferences", title: "Your training, your setup.", subtitle: "Local tools first. Optional coaching when you want it.")
-                        .padding(.vertical, 12)
-                }.listRowBackground(Color.clear).listRowInsets(EdgeInsets())
-                Section {
-                    Label("Timing & pose analysis", systemImage: "iphone")
-                        .foregroundStyle(SprintTheme.teal)
-                    Text("Ready to use on your device. No server or account required.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                }
-                Section {
-                    LabeledContent("Status", value: savedEndpoint.isEmpty ? "Not configured" : "Configuration saved")
-                        .font(.subheadline)
-                    TextField("https://your-server.example/feedback", text: $endpoint)
-                        .textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
-                        .accessibilityLabel("Feedback server URL")
-                    SecureField("Server access token", text: $token)
-                        .textInputAutocapitalization(.never).autocorrectionDisabled()
-                    Button("Save configuration") { save() }
-                        .frame(minHeight: 44)
+        Workspace { width, wide in
+            VStack(alignment: .leading, spacing: 32) {
+                Masthead {
                     if !savedEndpoint.isEmpty {
-                        Button("Remove configuration", role: .destructive) {
-                            do {
-                                try FeedbackConfiguration.saveToken("")
-                                savedEndpoint = ""; endpoint = ""; token = ""
-                                succeeded = true
-                                message = "Configuration removed."
-                            } catch { succeeded = false; message = error.localizedDescription }
-                        }.frame(minHeight: 44)
+                        Menu {
+                            Button("Remove server configuration", systemImage: "trash", role: .destructive) { showRemoval = true }
+                        } label: { Image(systemName: "ellipsis").font(SprintType.label).frame(width: 44, height: 44) }
+                            .tint(SprintTheme.ink).accessibilityLabel("Settings options")
                     }
-                    if let message {
-                        Label(message, systemImage: succeeded ? "checkmark.circle" : "exclamationmark.circle")
-                            .font(.footnote).foregroundStyle(succeeded ? SprintTheme.teal : .orange)
+                }
+                Text("Settings").font(SprintType.display(48)).accessibilityAddTraits(.isHeader)
+                if wide {
+                    HStack(alignment: .top, spacing: 80) {
+                        configuration.frame(width: (width - 80) * 0.6)
+                        details.frame(maxWidth: .infinity, alignment: .leading)
                     }
-                } header: { Text("Optional AI coaching") } footer: {
-                    Text("Use your own feedback server and its access token. Never enter an OpenAI API key here. Your token is stored in Keychain. Saving configuration does not test server connectivity.")
-                }
-                Section("What gets shared") {
-                    Label("You choose when to send", systemImage: "hand.raised")
-                    Text("AI feedback asks for confirmation before sending up to 14 frames and measured angle summaries to your configured server and OpenAI. Timing and local pose analysis do not send your footage.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                }
-                Section("About the measurements") {
-                    Text("Motion timing is experimental and has not been calibrated against race timing equipment. Angles are 2D estimates from a side view and depend on camera placement and landmark visibility.")
-                        .font(.subheadline).foregroundStyle(.secondary)
+                } else {
+                    configuration
+                    details.padding(.top, 16)
                 }
             }
-            .scrollContentBackground(.hidden).background(SprintTheme.background)
-            .toolbar(.hidden, for: .navigationBar)
-            .onAppear { endpoint = savedEndpoint; token = FeedbackConfiguration.token }
         }
+        .onAppear { endpoint = savedEndpoint; token = FeedbackConfiguration.token }
+        .confirmationDialog("Remove server configuration?", isPresented: $showRemoval, titleVisibility: .visible) {
+            Button("Remove configuration", role: .destructive) {
+                do {
+                    try FeedbackConfiguration.saveToken("")
+                    savedEndpoint = ""; endpoint = ""; token = ""
+                    message = "Configuration removed."
+                } catch { message = error.localizedDescription }
+            }
+        }
+    }
+
+    private var configuration: some View {
+        VStack(alignment: .leading, spacing: 28) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Feedback server").font(SprintType.section).accessibilityAddTraits(.isHeader)
+                Text(savedEndpoint.isEmpty ? "Optional · not configured" : "Configuration saved")
+                    .font(SprintType.detail).foregroundStyle(SprintTheme.muted)
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                FieldCaption("Endpoint")
+                TextField("Feedback server URL", text: $endpoint, prompt: Text("https://your-server.example/feedback").foregroundStyle(SprintTheme.muted))
+                    .font(SprintType.body).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
+                    .textContentType(.URL).focused($focused, equals: .endpoint).submitLabel(.next)
+                    .onSubmit { focused = .token }.padding(.vertical, 12).overlay(alignment: .bottom) { Hairline() }
+                    .accessibilityLabel("Feedback server URL")
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                FieldCaption("Access token")
+                SecureField("Server access token", text: $token, prompt: Text("Server token").foregroundStyle(SprintTheme.muted))
+                    .font(SprintType.body).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .focused($focused, equals: .token).submitLabel(.done).onSubmit { save() }
+                    .padding(.vertical, 12).overlay(alignment: .bottom) { Hairline() }
+                    .accessibilityLabel("Server access token")
+                Text("Your server token, not an OpenAI API key.").font(SprintType.caption).foregroundStyle(SprintTheme.muted)
+            }
+            Button("Save configuration") { save() }.buttonStyle(PrimaryActionStyle())
+            if let message { Text(message).font(SprintType.detail).foregroundStyle(SprintTheme.accent) }
+            Text("Stored in Keychain. Saving does not test connectivity.")
+                .font(SprintType.caption).foregroundStyle(SprintTheme.muted)
+        }
+    }
+
+    private var details: some View {
+        VStack(alignment: .leading, spacing: 28) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Local processing").font(SprintType.label)
+                Text("Timing and pose analysis work without a server.").font(SprintType.detail).foregroundStyle(SprintTheme.muted)
+            }
+            DisclosureGroup {
+                Text("AI feedback asks before sending up to 14 frames and angle summaries to your server and OpenAI. Timing and local pose analysis do not send footage.")
+                    .font(SprintType.detail).foregroundStyle(SprintTheme.muted).padding(.top, 10)
+            } label: { Text("Data & privacy").font(SprintType.label) }
+            DisclosureGroup {
+                Text("Motion timing is not calibrated against race timing equipment. Pose angles are 2D estimates affected by camera position and visibility.")
+                    .font(SprintType.detail).foregroundStyle(SprintTheme.muted).padding(.top, 10)
+            } label: { Text("Measurement limits").font(SprintType.label) }
+        }.tint(SprintTheme.ink)
     }
 
     private func save() {
         do {
             let url = try FeedbackConfiguration.endpoint(from: endpoint)
-            guard !token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                throw FeedbackConfiguration.ConfigurationError.missing
-            }
+            guard !token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw FeedbackConfiguration.ConfigurationError.missing }
             try FeedbackConfiguration.saveToken(token.trimmingCharacters(in: .whitespacesAndNewlines))
             savedEndpoint = url.absoluteString
-            succeeded = true
+            focused = nil
             message = "Configuration saved."
-        } catch { succeeded = false; message = error.localizedDescription }
+        } catch { message = error.localizedDescription }
     }
 }

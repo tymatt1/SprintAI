@@ -6,34 +6,34 @@ struct AngleCalloutView: View {
     let hasMeasurements: Bool
 
     var body: some View {
-        TrainingCard {
-            VStack(alignment: .leading, spacing: 16) {
-                Label("Frame measurements", systemImage: "ruler").font(.headline)
+        VStack(alignment: .leading, spacing: 20) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Measurements").font(SprintType.section).accessibilityAddTraits(.isHeader)
+                Spacer()
                 if let angles = angleDataList.first {
-                    HStack {
-                        Text("\(side.rawValue) side").font(.subheadline).foregroundStyle(.secondary)
-                        Spacer()
-                        Text(String(format: "%.2f s", angles.timestamp)).font(.caption.monospacedDigit()).foregroundStyle(SprintTheme.teal)
-                    }
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 90), alignment: .leading)], alignment: .leading, spacing: 16) {
-                        angle("Hip", value: angles.hipAngle)
-                        angle("Knee", value: angles.kneeAngle)
-                        angle("Torso", value: angles.torsoAngle)
-                    }
-                    Text("Scrub or pause the video to inspect a different moment.")
-                        .font(.caption).foregroundStyle(.secondary)
-                } else {
-                    Text(hasMeasurements ? "No reliable measurement at this moment. Scrub to a frame where your selected side is visible." : "No reliable angles were detected. Try a well-lit side view with your full body visible, and check the camera-side selection.")
-                        .font(.subheadline).foregroundStyle(.secondary)
+                    Text(String(format: "%.2f s", angles.timestamp)).font(SprintType.caption).monospacedDigit().foregroundStyle(SprintTheme.muted)
                 }
+            }
+            if let angles = angleDataList.first {
+                VStack(spacing: 4) {
+                    angle("Hip", value: angles.hipAngle)
+                    angle("Knee", value: angles.kneeAngle)
+                    angle("Torso", value: angles.torsoAngle)
+                }
+                Text("\(side.rawValue) side · 2D estimates. Scrub to inspect.")
+                    .font(SprintType.caption).foregroundStyle(SprintTheme.muted)
+            } else {
+                Text(hasMeasurements ? "No reliable pose in this frame." : "No reliable angles detected. Check camera side and full-body visibility.")
+                    .font(SprintType.detail).foregroundStyle(SprintTheme.muted)
             }
         }
     }
 
     private func angle(_ title: String, value: CGFloat) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(String(format: "%.1f°", value)).font(.title2.bold()).monospacedDigit()
-            Text(title).font(.caption).foregroundStyle(.secondary)
-        }.accessibilityElement(children: .combine)
+        HStack(alignment: .firstTextBaseline) {
+            Text(title).font(SprintType.body).foregroundStyle(SprintTheme.muted)
+            Spacer()
+            Text(String(format: "%.1f°", value)).font(SprintType.display(40)).monospacedDigit()
+        }.frame(minHeight: 48).accessibilityElement(children: .combine)
     }
 }

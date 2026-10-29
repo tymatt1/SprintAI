@@ -13,7 +13,7 @@ final class SprintTimerViewModel: ObservableObject {
         var id: String { rawValue }
     }
     @Published var historyRange: HistoryRange = .recent
-    @Published var selectedColor: Color = SprintTheme.teal
+    @Published var selectedColor: Color = SprintTheme.accent
     @Published var errorMessage: String?
 
     private let classifier: MotionClassifier

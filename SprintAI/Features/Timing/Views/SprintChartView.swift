@@ -34,6 +34,8 @@ struct SprintChartView: View {
             }
             .chartXScale(domain: xAxisDomain(records: records))
             .chartYScale(domain: yAxisDomain(records: records))
+            .font(SprintType.caption)
+            .foregroundStyle(SprintTheme.muted)
             .chartXAxis {
                 AxisMarks(values: .automatic) { _ in
                     AxisGridLine()
@@ -57,8 +59,8 @@ struct SprintChartView: View {
         .overlay {
             if records.isEmpty {
                 Text("Your detected sprints will appear here.")
-                    .font(.footnote).foregroundStyle(.secondary)
-                    .padding().background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                    .font(SprintType.detail).foregroundStyle(.secondary)
+                    .padding().background(SprintTheme.background)
                     .allowsHitTesting(false)
             }
         }
