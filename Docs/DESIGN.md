@@ -12,7 +12,7 @@ SprintAI is a training instrument. Its primary visual reference is a track-meet 
 
 ## Structure
 
-The app icon uses two parallel track lanes to form an S, drawn in warm paper on the same forest green as primary controls. A forward lean, angled terminals, and a chartreuse racing tip give the mark a sense of speed. It has no lettering, shadows, or gradients. Dark and monochrome tinted variants share the geometry; the tinted version keeps the mark white for system tinting. The vector source is in `Docs/Brand/app-icon.svg`; `swift Scripts/generate_app_icon.swift` regenerates all three opaque 1024-pixel assets.
+The app icon depicts a sprinter inside an open stopwatch dial, with two track lanes and a finish-line slash. The athlete's forward lean and airborne stride give it movement; a chartreuse racing vest and dial segment stand out against warm paper and forest green. It has no lettering, shadows, or gradients. Dark and grayscale tinted variants share the geometry. The vector source is in `Docs/Brand/app-icon.svg`; `swift Scripts/generate_app_icon.swift` regenerates all three opaque 1024-pixel assets from the same geometry definition.
 
 Timing gives the numeral and monitoring action priority. The recorded-times chart is always present, defaults to all saved times, and precedes the summary and results list. Summary data varies in scale rather than appearing in interchangeable tiles. Color and race callouts belong in a menu; deletion belongs beside the selected result.
 
