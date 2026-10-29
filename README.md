@@ -21,7 +21,7 @@ SprintAI brings two training tools into one app: detect sprinting from a phone's
 |---|---|---|
 | <img src="Docs/Screenshots/timing.png" width="240" alt="Sprint timing screen"> | <img src="Docs/Screenshots/analysis.png" width="240" alt="Video analysis screen"> | <img src="Docs/Screenshots/settings.png" width="240" alt="Feedback settings screen"> |
 
-Screenshots show the Barlow typography and open paper layout on the iPhone 18 Pro / iOS 27 simulator. The tablet preview uses four synthetic demonstration records; no athlete footage or real training records are included.
+Screenshots show the green color scheme, Barlow typography, and open layout on the iPhone 18 Pro / iOS 27 simulator. The tablet preview uses four synthetic demonstration records; no athlete footage or real training records are included.
 
 <img src="Docs/Screenshots/timing-ipad.png" width="800" alt="Asymmetric tablet timing workspace with synthetic demonstration results">
 

@@ -39,3 +39,7 @@ These checks do not establish real-world sprint timing accuracy or biomechanical
 - The oldest supported iPhone, iPad multitasking/orientation, larger text sizes, and VoiceOver.
 
 No hosted feedback service is deployed, and no new API credentials are provisioned. GitHub Actions configuration is included; its hosted results should be checked after publication.
+
+## Green-theme follow-up
+
+The green accent, subtitle removal, and always-visible recorded-times chart were checked with one simulator build and a brief phone/tablet review. The chart now appears before summaries, including its empty state, and defaults to all saved records. Existing per-record colors remain intact; the tablet screenshot uses the existing synthetic demonstration history. Full test suites were not rerun for this requested UI refinement.
