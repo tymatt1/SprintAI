@@ -8,11 +8,11 @@ SprintAI brings two training tools into one app: detect sprinting from a phone's
 
 ## Features
 
-- **Automatic timing:** synchronized motion samples at a requested 50 Hz, timestamp-resampled 50 Hz inference, and debounced sprint detection with confirmation-delay correction.
+- **Automatic timing:** timestamp-resampled motion inputs at 50 Hz, sliding-window inference, and debounced sprint detection with confirmation-delay correction.
 - **Session history:** local sprint records, fastest/average summaries, color-coded charts, all-time history, point selection, and confirmed deletion.
 - **Race callouts:** “On your marks,” “Set,” and a randomized start signal.
 - **Video analysis:** local pose detection, skeleton overlays, and camera-side hip, knee, and torso measurements that follow playback without bridging detection gaps.
-- **Export:** save annotated videos to Photos. Exports contain video only, without the source audio.
+- **Export:** save annotated videos to Photos or share the exported file. Exports contain video only, without the source audio.
 - **Optional AI feedback:** send up to 14 compressed frames through your own authenticated backend. No OpenAI API key is bundled in the iOS app.
 
 ## Screenshots

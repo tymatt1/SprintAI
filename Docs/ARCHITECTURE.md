@@ -36,7 +36,7 @@ Playback observations have an owned token removed on deinitialization. Displayed
 
 ## Feedback
 
-`FeedbackFrameExtractor` uses evenly spaced frames plus large knee-angle changes. Frames are bounded, JPEG-compressed, and labeled with their actual timestamps. The view model cancels stale requests, and the client calls only the configured backend. The server keeps the provider key in its environment and requests `store: false`.
+`FeedbackFrameExtractor` uses evenly spaced frames plus large knee-angle changes. Frames use precise seek tolerance, are bounded and JPEG-compressed, and are deduplicated/sorted by actual timestamps to avoid sending repeated keyframes. The view model cancels stale requests, and the client calls only the configured backend. The server keeps the provider key in its environment and requests `store: false`.
 
 The included gateway is intended for local development. It deliberately does not implement a production identity service, deployment platform, or persistent data store. The app's manually entered development access token belongs in Keychain. A distributed app should use short-lived per-user credentials from a real authentication service.
 

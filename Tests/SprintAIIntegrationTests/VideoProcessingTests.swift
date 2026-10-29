@@ -6,6 +6,20 @@ import SwiftUI
 @testable import SprintAI
 
 final class VideoProcessingTests: XCTestCase {
+    func testFeedbackFramesHaveStrictlyIncreasingActualTimestamps() async throws {
+        let source = try await makeVideo(rotated: false)
+        defer { try? FileManager.default.removeItem(at: source) }
+        let frames = try await FeedbackFrameExtractor.extract(url: source, angles: [])
+        XCTAssertGreaterThan(frames.count, 1, "A one-second, 24 fps clip should provide multiple distinct frames")
+        XCTAssertLessThanOrEqual(frames.count, 14)
+        XCTAssertTrue(zip(frames, frames.dropFirst()).allSatisfy { $0.timestamp < $1.timestamp }, "Coaching should receive distinct frames in chronological order")
+        for frame in frames {
+            XCTAssertTrue(frame.timestamp.isFinite && frame.timestamp >= 0)
+            let bytes = try XCTUnwrap(Data(base64Encoded: frame.jpegBase64))
+            XCTAssertLessThanOrEqual(bytes.count, 512 * 1024)
+        }
+    }
+
     func testBundledSprintModelAcceptsTrainingInputShape() throws {
         let model = try SprintDetectionModel(configuration: MLModelConfiguration())
         let input = try MLMultiArray(shape: [1, 50, 6], dataType: .double)
@@ -89,6 +103,33 @@ final class VideoProcessingTests: XCTestCase {
         ])
         let decoded = try JSONDecoder().decode(SprintTimeRecord.self, from: legacy)
         XCTAssertEqual(rgba(decoded.color), [0.5, 0.5, 0.5, 1])
+    }
+
+    @MainActor
+    func testInvalidHistoryDurationIsPreservedForRecovery() throws {
+        let name = "SprintAI-invalid-duration-\(UUID())"
+        let defaults = UserDefaults(suiteName: name)!
+        defer { defaults.removePersistentDomain(forName: name) }
+        let original = try JSONEncoder().encode([SprintTimeRecord(time: -4, color: .blue)])
+        defaults.set(original, forKey: "sprintTimes")
+        let model = SprintTimerViewModel(defaults: defaults)
+        XCTAssertTrue(model.sprintTimes.isEmpty)
+        XCTAssertNotNil(model.errorMessage)
+        XCTAssertEqual(defaults.data(forKey: "sprintTimesRecoveryBackup"), original)
+    }
+
+    @MainActor
+    func testHistoryRangeCanRecoverOlderSavedSprints() throws {
+        let name = "SprintAI-range-\(UUID())"
+        let defaults = UserDefaults(suiteName: name)!
+        defer { defaults.removePersistentDomain(forName: name) }
+        let older = SprintTimeRecord(date: Date().addingTimeInterval(-7200), time: 12, color: .blue)
+        let recent = SprintTimeRecord(time: 11.5, color: .green)
+        defaults.set(try JSONEncoder().encode([older, recent]), forKey: "sprintTimes")
+        let model = SprintTimerViewModel(defaults: defaults)
+        XCTAssertEqual(model.filteredSprintTimes().map(\.id), [recent.id])
+        model.historyRange = .all
+        XCTAssertEqual(model.filteredSprintTimes().map(\.id), [older.id, recent.id])
     }
 
     @MainActor

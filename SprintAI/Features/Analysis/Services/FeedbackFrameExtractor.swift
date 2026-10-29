@@ -17,17 +17,23 @@ enum FeedbackFrameExtractor {
         let generator = AVAssetImageGenerator(asset: asset)
         generator.appliesPreferredTrackTransform = true
         generator.maximumSize = CGSize(width: 1024, height: 1024)
+        // Default tolerance can resolve several requests to the same keyframe.
+        generator.requestedTimeToleranceBefore = .zero
+        generator.requestedTimeToleranceAfter = .zero
         var frames: [FeedbackFrame] = []
         for seconds in times {
             try Task.checkCancellation()
             let result = try await generator.image(at: CMTime(seconds: seconds, preferredTimescale: 600))
+            let timestamp = result.actualTime.seconds
+            guard timestamp.isFinite, timestamp >= 0,
+                  !frames.contains(where: { abs($0.timestamp - timestamp) < 0.001 }) else { continue }
             if let data = UIImage(cgImage: result.image).jpegData(compressionQuality: 0.65) {
                 guard data.count <= 512 * 1024 else { throw FrameError.tooLarge }
-                frames.append(FeedbackFrame(timestamp: result.actualTime.seconds, jpegBase64: data.base64EncodedString()))
+                frames.append(FeedbackFrame(timestamp: timestamp, jpegBase64: data.base64EncodedString()))
             }
         }
         guard !frames.isEmpty else { throw FrameError.empty }
-        return frames
+        return frames.sorted { $0.timestamp < $1.timestamp }
     }
 
     private enum FrameError: LocalizedError {

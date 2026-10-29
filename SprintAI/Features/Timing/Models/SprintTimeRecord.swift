@@ -33,6 +33,9 @@ struct SprintTimeRecord: Identifiable, Codable {
         id = try container.decode(UUID.self, forKey: .id)
         date = try container.decode(Date.self, forKey: .date)
         time = try container.decode(TimeInterval.self, forKey: .time)
+        guard time.isFinite, time > 0 else {
+            throw DecodingError.dataCorruptedError(forKey: .time, in: container, debugDescription: "Sprint duration must be positive and finite.")
+        }
         color = try container.decodeColor(forKey: .color)
     }
 
