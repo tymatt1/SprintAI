@@ -1,81 +1,39 @@
 import SwiftUI
 
 struct AngleCalloutView: View {
-    var angleDataList: [AngleData]
-    @Binding var dataHeight: CGFloat
+    let angleDataList: [AngleData]
+    let side: AnalysisSide
+    let hasMeasurements: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Image(systemName: "ruler")
-                Text("Angles")
-                    .font(.headline)
-                    .bold()
-                Spacer()
-            }
-            .foregroundColor(.white)
-
-            AngleDataChart(angleDataList: angleDataList, dataHeight: $dataHeight)
-                .frame(height: min(dataHeight, 260))
-        }
-        .padding(12)
-        .background(.ultraThinMaterial)
-        .background(Color.black.opacity(0.45))
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(Color.white.opacity(0.15), lineWidth: 1)
-        )
-    }
-}
-
-
-struct AngleDataChart: View {
-    var angleDataList: [AngleData]
-    @Binding var dataHeight: CGFloat
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                // Header Row
-                HStack {
-                    Text("Hip Angle")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                    Text("Knee Angle")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                    Text("Torso Angle")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                }
-                .padding()
-                .background(Color.black)
-
-                // Data Rows
-                ForEach(angleDataList) { angleData in
-                    HStack(spacing: 0) {
-                        AngleCell(angle: angleData.hipAngle)
-                        AngleCell(angle: angleData.kneeAngle)
-                        AngleCell(angle: angleData.torsoAngle)
+        TrainingCard {
+            VStack(alignment: .leading, spacing: 16) {
+                Label("Frame measurements", systemImage: "ruler").font(.headline)
+                if let angles = angleDataList.first {
+                    HStack {
+                        Text("\(side.rawValue) side").font(.subheadline).foregroundStyle(.secondary)
+                        Spacer()
+                        Text(String(format: "%.2f s", angles.timestamp)).font(.caption.monospacedDigit()).foregroundStyle(SprintTheme.teal)
                     }
-                    .padding(.vertical, 5)
-                    .background(Color.black)
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 90), alignment: .leading)], alignment: .leading, spacing: 16) {
+                        angle("Hip", value: angles.hipAngle)
+                        angle("Knee", value: angles.kneeAngle)
+                        angle("Torso", value: angles.torsoAngle)
+                    }
+                    Text("Scrub or pause the video to inspect a different moment.")
+                        .font(.caption).foregroundStyle(.secondary)
+                } else {
+                    Text(hasMeasurements ? "No reliable measurement at this moment. Scrub to a frame where your selected side is visible." : "No reliable angles were detected. Try a well-lit side view with your full body visible, and check the camera-side selection.")
+                        .font(.subheadline).foregroundStyle(.secondary)
                 }
             }
         }
-        .frame(height: dataHeight)
-        .background(Color.black)
     }
-}
 
-struct AngleCell: View {
-    var angle: CGFloat
-    var body: some View {
-        Text(String(format: "%.1f°", angle))
-            .monospacedDigit()
-            .padding(5)
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
+    private func angle(_ title: String, value: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(String(format: "%.1f°", value)).font(.title2.bold()).monospacedDigit()
+            Text(title).font(.caption).foregroundStyle(.secondary)
+        }.accessibilityElement(children: .combine)
     }
 }

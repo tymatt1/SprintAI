@@ -10,6 +10,7 @@ struct ContentView: View {
             FeedbackSettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape") }
         }
-        .tint(.green)
+        .tint(SprintTheme.accent)
+        .preferredColorScheme(.dark)
     }
 }

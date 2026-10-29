@@ -8,10 +8,10 @@ SprintAI brings two training tools into one app: detect sprinting from a phone's
 
 ## Features
 
-- **Automatic timing:** synchronized motion samples at a requested 50 Hz, sliding-window inference, and debounced sprint detection.
-- **Session history:** local sprint records, color-coded charts, point selection, and deletion.
+- **Automatic timing:** synchronized motion samples at a requested 50 Hz, timestamp-resampled 50 Hz inference, and debounced sprint detection with confirmation-delay correction.
+- **Session history:** local sprint records, fastest/average summaries, color-coded charts, all-time history, point selection, and confirmed deletion.
 - **Race callouts:** “On your marks,” “Set,” and a randomized start signal.
-- **Video analysis:** local pose detection, skeleton overlays, and right hip, right knee, and torso angle measurements.
+- **Video analysis:** local pose detection, skeleton overlays, and camera-side hip, knee, and torso measurements that follow playback without bridging detection gaps.
 - **Export:** save annotated videos to Photos. Exports contain video only, without the source audio.
 - **Optional AI feedback:** send up to 14 compressed frames through your own authenticated backend. No OpenAI API key is bundled in the iOS app.
 
@@ -21,7 +21,7 @@ SprintAI brings two training tools into one app: detect sprinting from a phone's
 |---|---|---|
 | <img src="Docs/Screenshots/timing.png" width="240" alt="Sprint timing screen"> | <img src="Docs/Screenshots/analysis.png" width="240" alt="Video analysis screen"> | <img src="Docs/Screenshots/settings.png" width="240" alt="Feedback settings screen"> |
 
-Screenshots are from the iPhone 15 simulator. No athlete footage or training records are included.
+Screenshots show the refreshed interface on the iPhone 18 Pro / iOS 27 simulator. No athlete footage or training records are included.
 
 ## Run the app
 
@@ -42,7 +42,7 @@ export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 
 Select the **SprintAI** scheme. For a physical device, select your own signing team. The bundle identifier remains `com.matthewt.SprintTimer` to preserve continuity with existing installations; change it if you need a separate development install.
 
-Timing and local pose analysis work without server credentials. For video analysis, select one video up to 60 seconds long and 4096 pixels per side; short clips under 20 seconds with the camera on the athlete's right side are recommended.
+Timing and local pose analysis work without server credentials. For video analysis, select one video up to 60 seconds long and 4096 pixels per side; short clips under 20 seconds filmed perpendicular to the athlete are recommended. Select the side facing the camera before import.
 
 ## Optional AI coaching
 

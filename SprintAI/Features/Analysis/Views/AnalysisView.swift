@@ -1,11 +1,3 @@
-//
-//  AnalysisView.swift
-//  SprintTimer
-//
-//  Created by Matthew Tybur on 11/19/24.
-//  Updated with AI feedback + Angles callout on 09/11/25
-//
-
 import SwiftUI
 import AVKit
 
@@ -13,255 +5,161 @@ import AVKit
 struct AnalysisView: View {
     @StateObject var viewModel = AnalysisViewModel()
     @State private var showVideoPicker = false
-    @State private var dataHeight: CGFloat = 205
-    @State private var bobAnimation = false
-
-    // Toggle to show/hide angles callout
-    @State private var showAnglesCallout = false
-
-    // For save operation feedback
     @State private var showSaveAlert = false
-    @State private var saveError: Error?
+    @State private var saveMessage = ""
+    @State private var isSaving = false
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        ZStack {
-            if let player = viewModel.annotatedVideoPlayer {
-                // MAIN VIDEO + ANGLES LAYOUT
-                VStack(spacing: 12) {
-                    // Header row with angle toggle
-                    HStack {
-                        Text("Sprint Analysis")
-                            .font(.title3).bold()
-                            .foregroundColor(.white)
-                        Spacer()
-                        Button {
-                            withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) {
-                                showAnglesCallout.toggle()
-                            }
-                        } label: {
-                            Label("Angles", systemImage: "chart.xyaxis.line")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .background(Color.gray.opacity(0.25))
-                                .clipShape(Capsule())
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
-
-                    // Video + close/save controls
-                    let aspectRatio = viewModel.videoAspectRatio()
-                    let isVertical = aspectRatio < 1.0
-
-                    HStack(alignment: .top, spacing: 8) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            // 'X' Button
-                            Button(action: {
-                                dataHeight = 205
-                                // Clear video ALSO clears AI feedback
-                                viewModel.clearVideo()
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.system(size: 30))
-                                    .foregroundColor(.white)
-                                    .padding(.top, isVertical ? 12 : 8)
-                            }
-
-                            // Save Button
-                            if let annotatedURL = viewModel.annotatedVideoURL {
-                                Button(action: {
-                                    saveVideoToPhotos(url: annotatedURL)
-                                }) {
-                                    Image(systemName: "arrow.down.circle.fill")
-                                        .font(.system(size: 30))
-                                        .foregroundColor(.white)
-                                }
-                            }
-                        }
-
-                        if isVertical {
-                            // For vertical videos
-                            let videoHeight: CGFloat = 350
-                            let videoWidth = videoHeight * aspectRatio
-
-                            AnalysisVideoPlayer(player: player, onTimeChange: viewModel.updatePlaybackTime)
-                                .frame(width: videoWidth, height: videoHeight)
-                                .cornerRadius(16)
-                                .clipped()
-                                .onAppear {
-                                    player.play()
-                                }
-                        } else {
-                            // For horizontal (landscape) videos
-                            AnalysisVideoPlayer(player: player, onTimeChange: viewModel.updatePlaybackTime)
-                                .aspectRatio(aspectRatio, contentMode: .fit)
-                                .cornerRadius(16)
-                                .clipped()
-                                .onAppear {
-                                    dataHeight = 400
-                                    player.play()
-                                }
-                        }
-                    }
-                    .transition(.opacity)
-                    .padding(.horizontal, 16)
-
-                    // ANGLES CALLOUT (appears when toggled)
-                    if showAnglesCallout {
-                        AngleCalloutView(
-                            angleDataList: viewModel.displayedAngleData,
-                            dataHeight: $dataHeight
-                        )
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 8)
-                    }
-
-                    Spacer(minLength: 0)
-                }
-                .padding(.top, 4)
-                .background(Color.black.ignoresSafeArea())
-                .animation(.easeInOut(duration: 0.5), value: viewModel.isProcessing)
-                .animation(.easeInOut(duration: 0.5), value: viewModel.annotatedVideoPlayer)
-                .alert(isPresented: $showSaveAlert) {
-                    if let error = saveError {
-                        return Alert(
-                            title: Text("Save Error"),
-                            message: Text(error.localizedDescription),
-                            dismissButton: .default(Text("OK"))
-                        )
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    TrainingHeader(eyebrow: "SprintAI · Motion lab", title: "Find your next edge.", subtitle: "See your mechanics. Understand your movement.")
+                    if let player = viewModel.annotatedVideoPlayer {
+                        result(player: player)
+                    } else if viewModel.isProcessing {
+                        processingCard
                     } else {
-                        return Alert(
-                            title: Text("Saved!"),
-                            message: Text("Your video was saved to the Photo Library."),
-                            dismissButton: .default(Text("OK"))
-                        )
+                        importCard
+                        filmingGuide
                     }
                 }
-                // Feedback panel is an overlay at the bottom of this screen,
-                // not part of the VStack flow.
-                .overlay(alignment: .bottom) {
-                    if !showAnglesCallout {
-                        FeedbackInlinePanel(viewModel: viewModel)
-                            .padding(.horizontal, 12)
-                            .padding(.bottom, 8)   // keeps it above the tab bar
-                    }
-                }
-
-            } else if viewModel.isProcessing {
-                // PROCESSING view (not scrollable)
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-                    Spacer(minLength: 150)
-                    OutlinedText(
-                        text: "Processing Video...",
-                        font: .headline,
-                        fillColor: .white,
-                        strokeColor: .blue,
-                        lineWidth: 0.3
-                    )
-                    .padding(.bottom, 20)
-
-                    ProgressView(value: viewModel.progress)
-                        .progressViewStyle(LinearProgressViewStyle(tint: .green))
-                        .padding(.horizontal, 40)
-                        .scaleEffect(x: 1, y: 2, anchor: .center)
-
-                    Button("Cancel") { viewModel.clearVideo() }
-                        .padding()
-                    Spacer()
-                }
-                .transition(.opacity)
-            } else {
-                // INITIAL VIEW (non-scrollable)
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-                    Spacer(minLength: 150)
-                    OutlinedImage(
-                        systemName: "figure.run.circle.fill",
-                        size: 150,
-                        fillColor: .white.opacity(0.8),
-                        strokeColor: .green,
-                        lineWidth: 0.8
-                    )
-                    .padding(.bottom, 20)
-
-                    OutlinedText(
-                        text: "Sprint Analysis",
-                        font: .largeTitle,
-                        weight: .bold,
-                        fillColor: .white,
-                        strokeColor: .green,
-                        lineWidth: 0.3
-                    )
-                    OutlinedText(
-                        text: "Tap to input a video.\n\nRecommended: under 20 seconds, camera on the athlete’s right side. Maximum length: 60 seconds.",
-                        font: .headline,
-                        fillColor: .white,
-                        strokeColor: .green,
-                        lineWidth: 0.3
-                    )
-                    .padding(10)
-                    .padding(.horizontal, 20)
-
-                    Spacer()
-                }
-                .padding()
-                .contentShape(Rectangle())
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Choose a sprint video")
-                .accessibilityHint("Select a side-view clip up to 60 seconds long")
-                .accessibilityAddTraits(.isButton)
-                .accessibilityAction { showVideoPicker = true }
-                .onTapGesture {
-                    showVideoPicker = true
-                }
-                .transition(.opacity)
-                .scaleEffect(bobAnimation ? 1.02 : 0.98)
-                .animation(
-                    Animation
-                        .easeInOut(duration: 1.2)
-                        .repeatForever(autoreverses: true),
-                    value: bobAnimation
-                )
-                .onAppear {
-                    bobAnimation = true
-                }
+                .padding(20)
+                .frame(maxWidth: 760)
+                .frame(maxWidth: .infinity)
             }
+            .background(SprintTheme.background)
+            .toolbar(.hidden, for: .navigationBar)
         }
-        // Video picker
         .sheet(isPresented: $showVideoPicker) {
             VideoPicker(selectedVideoURL: $viewModel.selectedVideoURL) { viewModel.processingError = $0 }
         }
-        .alert("Video analysis", isPresented: Binding(
-            get: { viewModel.processingError != nil },
-            set: { if !$0 { viewModel.processingError = nil } }
-        )) {
+        .alert("Video analysis", isPresented: Binding(get: { viewModel.processingError != nil }, set: { if !$0 { viewModel.processingError = nil } })) {
             Button("OK", role: .cancel) { viewModel.processingError = nil }
-        } message: {
-            Text(viewModel.processingError ?? "")
-        }
+        } message: { Text(viewModel.processingError ?? "") }
+        .alert("Video export", isPresented: $showSaveAlert) { Button("OK", role: .cancel) {} } message: { Text(saveMessage) }
         .onDisappear {
             viewModel.annotatedVideoPlayer?.pause()
             viewModel.cancelFeedback()
         }
-        .onChange(of: viewModel.selectedVideoURL) { _, newURL in
-            if let url = newURL {
-                viewModel.processVideo(url: url)
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active { viewModel.annotatedVideoPlayer?.pause() }
+        }
+        .onChange(of: viewModel.selectedVideoURL) { _, url in
+            if let url { viewModel.processVideo(url: url) }
+        }
+    }
+
+    private var importCard: some View {
+        TrainingCard {
+            VStack(alignment: .leading, spacing: 22) {
+                Image(systemName: "figure.run.square.stack.fill")
+                    .font(.system(size: 52, weight: .light)).foregroundStyle(SprintTheme.teal)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("A new perspective on your sprint.").font(.title2.bold())
+                    Text("Import a side-view clip to add a pose overlay and inspect hip, knee, and torso angles.")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Side facing the camera").font(.subheadline.weight(.medium))
+                    Picker("Side facing the camera", selection: $viewModel.analysisSide) {
+                        ForEach(AnalysisSide.allCases) { side in Text(side.rawValue).tag(side) }
+                    }.pickerStyle(.segmented)
+                }
+                Button { showVideoPicker = true } label: {
+                    Label("Choose a video", systemImage: "plus")
+                        .font(.headline).frame(maxWidth: .infinity, minHeight: 48)
+                }
+                .buttonStyle(.borderedProminent).tint(SprintTheme.accent).foregroundStyle(SprintTheme.background)
+                Label("Pose analysis stays on your device", systemImage: "lock.shield")
+                    .font(.caption).foregroundStyle(.secondary)
             }
         }
     }
 
+    private var filmingGuide: some View {
+        TrainingCard {
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Set up a better shot").font(.headline)
+                guideRow("01", title: "Film from the side", detail: "Keep the camera still and perpendicular to your direction of travel.")
+                guideRow("02", title: "Keep your whole body in frame", detail: "Leave room above your head and below your feet. Good light helps reduce blur.")
+                guideRow("03", title: "Keep it short", detail: "Under 20 seconds works best. Maximum: 60 seconds and 4096 pixels per side.")
+            }
+        }
+    }
+
+    private func guideRow(_ number: String, title: String, detail: String) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            Text(number).font(.caption.bold()).monospacedDigit().foregroundStyle(SprintTheme.teal).padding(.top, 3)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title).font(.subheadline.weight(.semibold))
+                Text(detail).font(.subheadline).foregroundStyle(.secondary)
+            }
+        }.accessibilityElement(children: .combine)
+    }
+
+    private var processingCard: some View {
+        TrainingCard {
+            VStack(alignment: .leading, spacing: 20) {
+                Label("Analyzing your movement", systemImage: "figure.run").font(.title2.bold())
+                Text("Building a pose overlay and measuring your \(viewModel.measuredSide.rawValue.lowercased()) side. Longer clips take more time.")
+                    .font(.subheadline).foregroundStyle(.secondary)
+                ProgressView(value: viewModel.progress).tint(SprintTheme.accent)
+                    .accessibilityLabel("Video processing")
+                Text(viewModel.progress, format: .percent.precision(.fractionLength(0)))
+                    .font(.title3.monospacedDigit()).foregroundStyle(SprintTheme.accent)
+                Button("Cancel analysis", role: .cancel) { viewModel.clearVideo() }
+                    .buttonStyle(.bordered).frame(minHeight: 44)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func result(player: AVPlayer) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Label("Analysis ready", systemImage: "checkmark.circle.fill").foregroundStyle(SprintTheme.teal).font(.subheadline)
+                Spacer()
+                Button("New clip", systemImage: "plus") { viewModel.clearVideo() }
+                    .frame(minHeight: 44).disabled(isSaving)
+            }
+            AnalysisVideoPlayer(player: player, onTimeChange: viewModel.updatePlaybackTime)
+                .id(viewModel.annotatedVideoURL)
+                .aspectRatio(viewModel.videoAspectRatio(), contentMode: .fit)
+                .frame(maxHeight: 480)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+            if let url = viewModel.annotatedVideoURL {
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 16) { exportButton(url); ShareLink(item: url) { Label("Share video", systemImage: "square.and.arrow.up").frame(minHeight: 44) } }
+                    VStack(alignment: .leading) { exportButton(url); ShareLink(item: url) { Label("Share video", systemImage: "square.and.arrow.up").frame(minHeight: 44) } }
+                }
+                .font(.subheadline.weight(.semibold)).tint(SprintTheme.teal)
+            }
+            Text("Export includes the pose overlay. Source audio is not included.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+        AngleCalloutView(angleDataList: viewModel.displayedAngleData, side: viewModel.measuredSide, hasMeasurements: !viewModel.angleDataList.isEmpty)
+        FeedbackInlinePanel(viewModel: viewModel)
+        Text("Angles are 2D estimates. Camera position, visibility, and stride phase affect the measurement.")
+            .font(.caption).foregroundStyle(.secondary)
+    }
+
+    private func exportButton(_ url: URL) -> some View {
+        Button { saveVideoToPhotos(url: url) } label: {
+            Label(isSaving ? "Saving…" : "Save to Photos", systemImage: "arrow.down.to.line").frame(minHeight: 44)
+        }.disabled(isSaving)
+    }
+
     private func saveVideoToPhotos(url: URL) {
+        guard !isSaving else { return }
+        isSaving = true
         Task {
+            defer { isSaving = false }
             do {
                 try await VideoSaver.save(url: url)
-                saveError = nil
-            } catch { saveError = error }
+                saveMessage = "Your annotated video was saved to Photos."
+            } catch { saveMessage = error.localizedDescription }
             showSaveAlert = true
         }
     }

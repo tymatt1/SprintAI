@@ -8,12 +8,12 @@ struct FeedbackInlinePanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Label("AI Form Feedback", systemImage: "sparkles").font(.headline)
+                Label("Coach’s notes", systemImage: "sparkles").font(.headline)
                 Spacer()
                 Button {
                     withAnimation { expanded.toggle() }
                 } label: {
-                    Image(systemName: expanded ? "chevron.down" : "chevron.up")
+                    Image(systemName: expanded ? "chevron.down" : "chevron.up").frame(minWidth: 44, minHeight: 44)
                 }
                 .accessibilityLabel(expanded ? "Collapse feedback" : "Expand feedback")
             }
@@ -25,9 +25,10 @@ struct FeedbackInlinePanel: View {
                     Button("Cancel", role: .cancel) { viewModel.cancelFeedback() }
                 }
             } else {
-                Button("Get feedback") { showConsent = true }
+                Button(viewModel.feedbackText == nil ? "Get AI feedback" : "Generate again") { showConsent = true }
                     .buttonStyle(.borderedProminent)
-                    .tint(.green)
+                    .tint(SprintTheme.accent)
+                    .foregroundStyle(SprintTheme.background)
             }
             if let error = viewModel.feedbackError {
                 Text(error).font(.footnote).foregroundStyle(.red)
@@ -41,13 +42,14 @@ struct FeedbackInlinePanel: View {
                 }
                 .frame(maxHeight: expanded ? 340 : 140)
             } else if !viewModel.isGeneratingFeedback {
-                Text("Get observations and coaching suggestions for this clip.")
+                Text("Optional AI observations for this clip. Configure your feedback server in Settings to get started.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
         }
-        .padding()
-        .foregroundStyle(.white)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(SprintTheme.surface, in: RoundedRectangle(cornerRadius: 24))
+        .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(0.07)))
         .confirmationDialog("Send frames for AI feedback?", isPresented: $showConsent, titleVisibility: .visible) {
             Button("Send frames") { viewModel.generateFormFeedback() }
         } message: {

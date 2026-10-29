@@ -1,88 +1,35 @@
 import SwiftUI
 
-struct OutlinedText: View {
-    var text: String
-    var font: Font
-    var weight: Font.Weight = .regular
-    var fillColor: Color = .white
-    var strokeColor: Color = .blue
-    var lineWidth: CGFloat = 1
+/// Shared visual language for the training screens.
+enum SprintTheme {
+    static let background = Color(red: 0.035, green: 0.055, blue: 0.085)
+    static let surface = Color(red: 0.075, green: 0.10, blue: 0.14)
+    static let accent = Color(red: 0.69, green: 0.96, blue: 0.32)
+    static let teal = Color(red: 0.25, green: 0.84, blue: 0.80)
+}
 
+struct TrainingCard<Content: View>: View {
+    private let content: Content
+    init(@ViewBuilder content: () -> Content) { self.content = content() }
     var body: some View {
-        ZStack {
-            // Stroke
-            Text(text)
-                .font(font)
-                .fontWeight(weight)
-                .foregroundColor(strokeColor)
-                .offset(x: -lineWidth, y: -lineWidth)
-            Text(text)
-                .font(font)
-                .fontWeight(weight)
-                .foregroundColor(strokeColor)
-                .offset(x: lineWidth, y: -lineWidth)
-            Text(text)
-                .font(font)
-                .fontWeight(weight)
-                .foregroundColor(strokeColor)
-                .offset(x: -lineWidth, y: lineWidth)
-            Text(text)
-                .font(font)
-                .fontWeight(weight)
-                .foregroundColor(strokeColor)
-                .offset(x: lineWidth, y: lineWidth)
-            // Fill
-            Text(text)
-                .font(font)
-                .fontWeight(weight)
-                .foregroundColor(fillColor)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(text)
+        content
+            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(SprintTheme.surface, in: RoundedRectangle(cornerRadius: 24))
+            .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(0.07)))
     }
 }
 
-struct OutlinedImage: View {
-    var systemName: String
-    var size: CGFloat
-    var fillColor: Color = .white
-    var strokeColor: Color = .blue
-    var lineWidth: CGFloat = 2
-
+struct TrainingHeader: View {
+    let eyebrow: String
+    let title: String
+    let subtitle: String
     var body: some View {
-        ZStack {
-            // Stroke
-            Image(systemName: systemName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: size, height: size)
-                .foregroundColor(strokeColor)
-                .offset(x: -lineWidth, y: -lineWidth)
-            Image(systemName: systemName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: size, height: size)
-                .foregroundColor(strokeColor)
-                .offset(x: lineWidth, y: -lineWidth)
-            Image(systemName: systemName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: size, height: size)
-                .foregroundColor(strokeColor)
-                .offset(x: -lineWidth, y: lineWidth)
-            Image(systemName: systemName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: size, height: size)
-                .foregroundColor(strokeColor)
-                .offset(x: lineWidth, y: lineWidth)
-            // Fill
-            Image(systemName: systemName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: size, height: size)
-                .foregroundColor(fillColor)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(eyebrow.uppercased()).font(.caption.weight(.bold)).tracking(2).foregroundStyle(SprintTheme.accent)
+            Text(title).font(.largeTitle.bold())
+            Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
         }
-        .accessibilityHidden(true)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

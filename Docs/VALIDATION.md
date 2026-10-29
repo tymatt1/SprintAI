@@ -1,27 +1,27 @@
 # Validation
 
-Validated locally on October 28, 2026 with Xcode 15.4 / iOS 17.5 simulator.
+Validated locally on October 28, 2026 with Xcode 27.0 / iOS 27.0 simulator for the October 28 polish updates.
 
 | Check | Result |
 |---|---|
-| Swift Package core regression tests | 6 passed |
+| Swift Package core regression tests | 10 passed |
 | Python feedback gateway tests, with mocked provider calls | 6 passed |
-| Hosted iOS integration tests on iPhone 15 | 6 passed |
+| Hosted iOS integration tests on iPhone 18 Pro, MediaPipe 1.0.0 | 6 passed |
 | Simulator app build | Passed |
-| Unsigned physical-device Release build | Passed |
+| Unsigned physical-device Release build | Earlier 1.1 baseline passed; polish update check pending |
 | Common credential-pattern scan of staged source and publication history | Passed before publication |
 
 ## Automated coverage
 
-Core tests cover debounced start/stop transitions, duration from sensor timestamps, immediate subsequent sprints, reset behavior, duplicate/out-of-order samples, degenerate joint geometry, and short-clip frame selection.
+Core tests cover debounced start/stop transitions, duration from sensor timestamps, immediate subsequent sprints, reset behavior, duplicate/out-of-order samples, degenerate joint geometry, short-clip frame selection, interpolated 50 Hz sample cadence, sensor-gap resets, first-decision boundaries, and nearest playback measurements across seeks and pose gaps.
 
 Gateway tests cover input validation, authorization before provider access, bounded request rate, response extraction contract, and upstream-error redaction. No live OpenAI calls or charges are made by the tests.
 
-The hosted iOS tests load the actual bundled Core ML model, run inference with the expected input shape, initialize MediaPipe while processing a synthetic video, verify portrait export dimensions and playable frames, test cancellation, verify annotation orientation and visibility filtering, round-trip saved record colors including legacy grayscale, and preserve unreadable history in a recovery copy.
+The hosted iOS tests load the actual bundled Core ML model, run inference with the expected input shape, initialize MediaPipe while processing a synthetic video, verify portrait export dimensions and playable frames, test cancellation, verify annotation orientation, both analysis sides, out-of-frame rejection, and visibility filtering, round-trip saved record colors including legacy grayscale, and preserve unreadable history in a recovery copy.
 
 ## Manual smoke checks
 
-The app launches in the iPhone 15 simulator. Timing controls and tabs render; starting motion monitoring shows a clear unavailable-sensors message and returns to the stopped state. Analysis import entry and feedback Settings screens render. Screenshots are included in this repository.
+The refreshed app launches in the iPhone 18 Pro simulator. The timer dashboard, video import, settings, and tabs render; starting motion monitoring shows a clear unavailable-sensors message and returns to the stopped state. Camera-side selection, filming guidance, explicit import, and feedback Settings screens render. Updated screenshots are included. Screenshots are included in this repository.
 
 ## Remaining validation
 

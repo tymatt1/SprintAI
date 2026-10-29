@@ -44,7 +44,7 @@ struct SprintChartView: View {
             .chartYAxis {
                 AxisMarks(values: .automatic(desiredCount: 5))
             }
-            .frame(width: max(320, CGFloat(records.count) * 50), height: 230)
+            .frame(width: max(240, min(1600, CGFloat(records.count) * 50)), height: 230)
             .padding(.top, 24)
             .padding(.horizontal, 8)
             .chartOverlay { proxy in

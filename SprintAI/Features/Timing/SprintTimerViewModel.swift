@@ -7,7 +7,13 @@ final class SprintTimerViewModel: ObservableObject {
     @Published private(set) var sprintTimes: [SprintTimeRecord] = []
     @Published private(set) var isRecording = false
     @Published private(set) var isSprinting = false
-    @Published var selectedColor: Color = .blue
+    enum HistoryRange: String, CaseIterable, Identifiable {
+        case recent = "Last hour"
+        case all = "All time"
+        var id: String { rawValue }
+    }
+    @Published var historyRange: HistoryRange = .recent
+    @Published var selectedColor: Color = SprintTheme.teal
     @Published var errorMessage: String?
 
     private let classifier: MotionClassifier
@@ -114,6 +120,7 @@ final class SprintTimerViewModel: ObservableObject {
     }
 
     func filteredSprintTimes() -> [SprintTimeRecord] {
+        if historyRange == .all { return sprintTimes }
         let cutoff = Date().addingTimeInterval(-3600)
         return sprintTimes.filter { $0.date >= cutoff }
     }
