@@ -79,8 +79,6 @@ struct AnalysisView: View {
     private var importControls: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Video analysis").font(SprintType.display(64)).accessibilityAddTraits(.isHeader)
-            Text("Hip, knee & torso angles from a side view.")
-                .font(SprintType.body).foregroundStyle(SprintTheme.muted).padding(.top, 12)
             VStack(alignment: .leading, spacing: 10) {
                 FieldCaption("Side facing camera")
                 HStack(spacing: 28) {
@@ -99,10 +97,6 @@ struct AnalysisView: View {
             Button { showVideoPicker = true } label: {
                 HStack { Text("Import video"); Spacer(); Image(systemName: "arrow.up.right") }.frame(maxWidth: .infinity)
             }.buttonStyle(PrimaryActionStyle()).padding(.top, 32)
-            Text("Up to 60 seconds · 4096 px per side")
-                .font(SprintType.detail).foregroundStyle(SprintTheme.muted).padding(.top, 12)
-            Text("Processed on this device.")
-                .font(SprintType.caption).foregroundStyle(SprintTheme.muted).padding(.top, 28)
         }
     }
 
@@ -110,7 +104,7 @@ struct AnalysisView: View {
         VStack(alignment: .leading, spacing: 24) {
             guideItem("Camera", "Side-on and stationary, with your full body in frame.")
             guideItem("Light", "Use good light to reduce motion blur.")
-            guideItem("Length", "Under 20 seconds is recommended.")
+            guideItem("Length", "Under 20 seconds is recommended. Maximum: 60 seconds and 4096 pixels per side.")
         }
     }
 
@@ -138,8 +132,7 @@ struct AnalysisView: View {
                 .id(viewModel.annotatedVideoURL)
                 .aspectRatio(viewModel.videoAspectRatio(), contentMode: .fit)
                 .frame(maxHeight: 560)
-            Text(isSaving ? "Saving to Photos…" : "Annotated video · no audio")
-                .font(SprintType.caption).foregroundStyle(SprintTheme.muted)
+            if isSaving { Text("Saving…").font(SprintType.caption).foregroundStyle(SprintTheme.muted) }
         }
     }
 

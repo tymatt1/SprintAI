@@ -12,7 +12,7 @@ final class SprintTimerViewModel: ObservableObject {
         case all = "All time"
         var id: String { rawValue }
     }
-    @Published var historyRange: HistoryRange = .recent
+    @Published var historyRange: HistoryRange = .all
     @Published var selectedColor: Color = SprintTheme.accent
     @Published var errorMessage: String?
 

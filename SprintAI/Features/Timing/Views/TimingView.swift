@@ -15,7 +15,7 @@ struct TimingView: View {
 
     var body: some View {
         Workspace { width, wide in
-            VStack(alignment: .leading, spacing: 32) {
+            VStack(alignment: .leading, spacing: 24) {
                 Masthead { actions }
                 if wide {
                     HStack(alignment: .top, spacing: 64) {
@@ -68,35 +68,31 @@ struct TimingView: View {
 
     private var timer: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Timing").font(SprintType.display(48)).accessibilityAddTraits(.isHeader)
+            Text("Timing").font(SprintType.display(40)).accessibilityAddTraits(.isHeader)
             Text(status.uppercased()).font(SprintType.caption).tracking(1.4)
                 .foregroundStyle(viewModel.isRecording ? SprintTheme.accent : SprintTheme.muted)
-                .padding(.top, 28)
+                .padding(.top, 16)
             HStack(alignment: .firstTextBaseline, spacing: 10) {
                 Text(viewModel.timeElapsed, format: .number.precision(.fractionLength(2)))
-                    .font(SprintType.display(148)).monospacedDigit().tracking(-2)
+                    .font(SprintType.display(124)).foregroundStyle(SprintTheme.accent).monospacedDigit().tracking(-2)
                     .minimumScaleFactor(0.35).lineLimit(1)
                     .accessibilityLabel("\(viewModel.timeElapsed, specifier: "%.2f") seconds")
                 Text("s").font(SprintType.section).foregroundStyle(SprintTheme.muted).accessibilityHidden(true)
             }
-            .padding(.top, 2).padding(.bottom, 24)
+            .padding(.top, 2).padding(.bottom, 16)
             ControlPanelView(viewModel: viewModel)
-            Text("Secure your phone. Allow 1 second to warm up.")
-                .font(SprintType.detail).foregroundStyle(SprintTheme.muted).padding(.top, 12)
             if let error = viewModel.errorMessage {
                 Text(error).font(SprintType.detail).foregroundStyle(SprintTheme.accent).padding(.top, 12)
             }
             if raceAudio.isPlaying { Text("Race callouts playing").font(SprintType.detail).foregroundStyle(SprintTheme.accent).padding(.top, 12) }
             if let error = raceAudio.errorMessage { Text(error).font(SprintType.detail).foregroundStyle(SprintTheme.accent).padding(.top, 12) }
-            Text("Detection timing · uncalibrated")
-                .font(SprintType.caption).foregroundStyle(SprintTheme.muted).padding(.top, 24)
         }
     }
 
     private var history: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .firstTextBaseline) {
-                Text("Session").font(SprintType.section).accessibilityAddTraits(.isHeader)
+                Text("Recorded times").font(SprintType.section).accessibilityAddTraits(.isHeader)
                 Spacer()
                 Menu {
                     Picker("History range", selection: $viewModel.historyRange) {
@@ -107,14 +103,9 @@ struct TimingView: View {
                         .font(SprintType.detail).frame(minHeight: 44)
                 }.tint(SprintTheme.ink).accessibilityLabel("History range: \(viewModel.historyRange.rawValue)")
             }
-            summary
-            if records.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("No sprints recorded.").font(SprintType.label)
-                    Text("Completed reps save here.").font(SprintType.detail).foregroundStyle(SprintTheme.muted)
-                }.padding(.vertical, 12)
-            } else {
-                SprintChartView(viewModel: viewModel, selectedRecord: $selectedRecord).frame(height: 260)
+            SprintChartView(viewModel: viewModel, selectedRecord: $selectedRecord).frame(height: 260)
+            if !records.isEmpty {
+                summary
                 VStack(spacing: 0) {
                     HStack { FieldCaption("Recorded"); Spacer(); FieldCaption("Seconds") }.padding(.trailing, 52).padding(.bottom, 12)
                     Hairline()

@@ -3,10 +3,10 @@ import SwiftUI
 /// A results-sheet palette: paper, ink, and one signal color.
 enum SprintTheme {
     static let background = Color(red: 0.965, green: 0.953, blue: 0.925)
-    static let ink = Color(red: 0.13, green: 0.14, blue: 0.13)
-    static let muted = Color(red: 0.39, green: 0.39, blue: 0.36)
-    static let accent = Color(red: 0.72, green: 0.20, blue: 0.11)
-    static let rule = Color(red: 0.81, green: 0.80, blue: 0.76)
+    static let ink = Color(red: 0.08, green: 0.17, blue: 0.11)
+    static let muted = Color(red: 0.31, green: 0.37, blue: 0.33)
+    static let accent = Color(red: 0.08, green: 0.40, blue: 0.23)
+    static let rule = Color(red: 0.77, green: 0.83, blue: 0.78)
 }
 
 enum SprintType {
@@ -27,7 +27,7 @@ struct PrimaryActionStyle: ButtonStyle {
             .padding(.horizontal, 20).padding(.vertical, 17)
             .frame(minHeight: 54)
             .foregroundStyle(SprintTheme.background)
-            .background(SprintTheme.ink.opacity(configuration.isPressed ? 0.82 : 1), in: RoundedRectangle(cornerRadius: 2))
+            .background(SprintTheme.accent.opacity(configuration.isPressed ? 0.82 : 1), in: RoundedRectangle(cornerRadius: 2))
     }
 }
 
@@ -67,7 +67,7 @@ struct Masthead<Actions: View>: View {
     init(@ViewBuilder actions: () -> Actions) { self.actions = actions() }
     var body: some View {
         HStack {
-            Text("SPRINTAI").font(SprintType.display(26)).tracking(1)
+            Text("SPRINTAI").font(SprintType.display(26)).tracking(1).foregroundStyle(SprintTheme.accent)
                 .accessibilityLabel("Sprint AI")
             Spacer()
             actions

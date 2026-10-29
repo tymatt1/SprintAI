@@ -48,8 +48,6 @@ struct FeedbackSettingsView: View {
         VStack(alignment: .leading, spacing: 28) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Feedback server").font(SprintType.section).accessibilityAddTraits(.isHeader)
-                Text(savedEndpoint.isEmpty ? "Optional · not configured" : "Configuration saved")
-                    .font(SprintType.detail).foregroundStyle(SprintTheme.muted)
             }
             VStack(alignment: .leading, spacing: 8) {
                 FieldCaption("Endpoint")
@@ -66,23 +64,16 @@ struct FeedbackSettingsView: View {
                     .focused($focused, equals: .token).submitLabel(.done).onSubmit { save() }
                     .padding(.vertical, 12).overlay(alignment: .bottom) { Hairline() }
                     .accessibilityLabel("Server access token")
-                Text("Your server token, not an OpenAI API key.").font(SprintType.caption).foregroundStyle(SprintTheme.muted)
             }
             Button("Save configuration") { save() }.buttonStyle(PrimaryActionStyle())
             if let message { Text(message).font(SprintType.detail).foregroundStyle(SprintTheme.accent) }
-            Text("Stored in Keychain. Saving does not test connectivity.")
-                .font(SprintType.caption).foregroundStyle(SprintTheme.muted)
         }
     }
 
     private var details: some View {
         VStack(alignment: .leading, spacing: 28) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Local processing").font(SprintType.label)
-                Text("Timing and pose analysis work without a server.").font(SprintType.detail).foregroundStyle(SprintTheme.muted)
-            }
             DisclosureGroup {
-                Text("AI feedback asks before sending up to 14 frames and angle summaries to your server and OpenAI. Timing and local pose analysis do not send footage.")
+                Text("Use your server token, not an OpenAI API key. Tokens are stored in Keychain; saving does not test connectivity. AI feedback asks before sending up to 14 frames and angle summaries to your server and OpenAI. Timing and local pose analysis do not send footage.")
                     .font(SprintType.detail).foregroundStyle(SprintTheme.muted).padding(.top, 10)
             } label: { Text("Data & privacy").font(SprintType.label) }
             DisclosureGroup {

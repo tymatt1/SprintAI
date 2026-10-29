@@ -8,7 +8,7 @@ struct SprintChartView: View {
     private var records: [SprintTimeRecord] { viewModel.filteredSprintTimes() }
     private var series: [Series] {
         Dictionary(grouping: records, by: \.colorID).map { key, values in
-            Series(id: key, color: values.first?.color ?? .blue, records: values.sorted { $0.date < $1.date })
+            Series(id: key, color: values.first?.color ?? SprintTheme.accent, records: values.sorted { $0.date < $1.date })
         }.sorted { $0.id < $1.id }
     }
 
@@ -70,7 +70,7 @@ struct SprintChartView: View {
             }
             .overlay {
                 if records.isEmpty {
-                    Text("Your detected sprints will appear here.")
+                    Text("No recorded times")
                         .font(SprintType.detail).foregroundStyle(.secondary)
                         .padding().background(SprintTheme.background)
                         .allowsHitTesting(false)

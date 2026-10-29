@@ -20,8 +20,6 @@ struct AngleCalloutView: View {
                     angle("Knee", value: angles.kneeAngle)
                     angle("Torso", value: angles.torsoAngle)
                 }
-                Text("\(side.rawValue) side · 2D estimates. Scrub to inspect.")
-                    .font(SprintType.caption).foregroundStyle(SprintTheme.muted)
             } else {
                 Text(hasMeasurements ? "No reliable pose in this frame." : "No reliable angles detected. Check camera side and full-body visibility.")
                     .font(SprintType.detail).foregroundStyle(SprintTheme.muted)

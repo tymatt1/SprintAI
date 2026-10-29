@@ -136,6 +136,7 @@ final class VideoProcessingTests: XCTestCase {
         let recent = SprintTimeRecord(time: 11.5, color: .green)
         defaults.set(try JSONEncoder().encode([older, recent]), forKey: "sprintTimes")
         let model = SprintTimerViewModel(defaults: defaults)
+        model.historyRange = .recent
         XCTAssertEqual(model.filteredSprintTimes().map(\.id), [recent.id])
         model.historyRange = .all
         XCTAssertEqual(model.filteredSprintTimes().map(\.id), [older.id, recent.id])
