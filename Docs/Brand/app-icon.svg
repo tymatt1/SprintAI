@@ -1,6 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <title>SprintAI — track S</title>
+  <title>SprintAI — racing track S</title>
   <rect width="1024" height="1024" fill="#14663B"/>
-  <path d="M736 300H430C284 300 284 512 430 512H594C740 512 740 724 594 724H288" fill="none" stroke="#F6F3EC" stroke-width="152"/>
-  <path d="M736 300H430C284 300 284 512 430 512H594C740 512 740 724 594 724H288" fill="none" stroke="#14663B" stroke-width="24"/>
+  <g transform="matrix(1 0 -.18 1 92.16 0)">
+    <path d="M736 300H430C284 300 284 512 430 512H594C740 512 740 724 594 724H288" fill="none" stroke="#F6F3EC" stroke-width="152"/>
+    <path d="M736 300H430C284 300 284 512 430 512H594C740 512 740 724 594 724H288" fill="none" stroke="#14663B" stroke-width="24"/>
+    <path d="M624 224H736V288H588Z" fill="#C8F27A"/>
+    <path d="M736 224V376H708Z M288 648H316L288 800Z" fill="#14663B"/>
+  </g>
 </svg>
