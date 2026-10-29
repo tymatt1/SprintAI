@@ -13,55 +13,68 @@ struct SprintChartView: View {
     }
 
     var body: some View {
-        ScrollView(.horizontal) {
-            Chart {
-                ForEach(series) { series in
-                    ForEach(series.records) { record in
-                        if series.records.count > 1 {
-                            LineMark(x: .value("Recorded", record.date), y: .value("Seconds", record.time), series: .value("Series", series.id))
-                                .foregroundStyle(series.color)
+        GeometryReader { container in
+            ScrollView(.horizontal) {
+                Chart {
+                    ForEach(series) { series in
+                        ForEach(series.records) { record in
+                            if series.records.count > 1 {
+                                LineMark(x: .value("Recorded", record.date), y: .value("Seconds", record.time), series: .value("Series", series.id))
+                                    .foregroundStyle(series.color)
+                            }
+                            PointMark(x: .value("Recorded", record.date), y: .value("Seconds", record.time))
+                                .symbol {
+                                    let selected = record.id == selectedRecord?.id
+                                    CircleSymbol(color: record.color, isSelected: selected, size: selected ? 16 : 8)
+                                }
+                                .annotation(position: .top) {
+                                    if record.id == selectedRecord?.id { AnnotationView(record: record) }
+                                }
                         }
-                        PointMark(x: .value("Recorded", record.date), y: .value("Seconds", record.time))
-                            .symbol {
-                                let selected = record.id == selectedRecord?.id
-                                CircleSymbol(color: record.color, isSelected: selected, size: selected ? 16 : 8)
+                    }
+                }
+                .chartXScale(domain: xAxisDomain(records: records))
+                .chartYScale(domain: yAxisDomain(records: records))
+                .font(SprintType.caption)
+                .foregroundStyle(SprintTheme.muted)
+                .chartXAxis {
+                    AxisMarks(values: .automatic) { value in
+                        AxisGridLine()
+                        AxisTick()
+                        AxisValueLabel {
+                            if let date = value.as(Date.self) {
+                                Text(date, format: .dateTime.hour().minute()).font(SprintType.caption)
                             }
-                            .annotation(position: .top) {
-                                if record.id == selectedRecord?.id { AnnotationView(record: record) }
+                        }
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks(values: .automatic(desiredCount: 5)) { value in
+                        AxisGridLine()
+                        AxisValueLabel {
+                            if let seconds = value.as(Double.self) {
+                                Text(seconds, format: .number.precision(.fractionLength(0...2))).font(SprintType.caption)
                             }
+                        }
+                    }
+                }
+                .frame(width: max(container.size.width - 16, min(1600, CGFloat(records.count) * 50)), height: 230)
+                .padding(.top, 24)
+                .padding(.horizontal, 8)
+                .chartOverlay { proxy in
+                    GeometryReader { geometry in
+                        Rectangle().fill(.clear).contentShape(Rectangle())
+                            .onTapGesture { location in select(at: location, proxy: proxy, geometry: geometry) }
                     }
                 }
             }
-            .chartXScale(domain: xAxisDomain(records: records))
-            .chartYScale(domain: yAxisDomain(records: records))
-            .font(SprintType.caption)
-            .foregroundStyle(SprintTheme.muted)
-            .chartXAxis {
-                AxisMarks(values: .automatic) { _ in
-                    AxisGridLine()
-                    AxisTick()
-                    AxisValueLabel(format: .dateTime.hour().minute())
+            .overlay {
+                if records.isEmpty {
+                    Text("Your detected sprints will appear here.")
+                        .font(SprintType.detail).foregroundStyle(.secondary)
+                        .padding().background(SprintTheme.background)
+                        .allowsHitTesting(false)
                 }
-            }
-            .chartYAxis {
-                AxisMarks(values: .automatic(desiredCount: 5))
-            }
-            .frame(width: max(240, min(1600, CGFloat(records.count) * 50)), height: 230)
-            .padding(.top, 24)
-            .padding(.horizontal, 8)
-            .chartOverlay { proxy in
-                GeometryReader { geometry in
-                    Rectangle().fill(.clear).contentShape(Rectangle())
-                        .onTapGesture { location in select(at: location, proxy: proxy, geometry: geometry) }
-                }
-            }
-        }
-        .overlay {
-            if records.isEmpty {
-                Text("Your detected sprints will appear here.")
-                    .font(SprintType.detail).foregroundStyle(.secondary)
-                    .padding().background(SprintTheme.background)
-                    .allowsHitTesting(false)
             }
         }
     }

@@ -19,3 +19,11 @@ Analysis gives footage the primary column on wide displays, with measurements in
 Settings uses open, labeled fields. Server configuration remains optional, and information about sharing and measurement limitations is disclosed in expandable sections.
 
 SwiftUI layouts adapt to measured available width and Dynamic Type, using unequal horizontal columns when space permits and a single reading order when it does not. This is a native iOS implementation; there is no CSS layer.
+
+## Verification
+
+The shipped layout was inspected on iPhone 18 Pro and iPad Pro 13-inch in portrait and landscape, including a four-record synthetic history and selected-record actions. Selection reserves the same action column for every result, so the time column does not move when a menu appears. Chart labels use explicit Barlow text, and the plot measures its available column width.
+
+At the largest accessibility size, navigation changes to a horizontally scrollable text rail rather than wrapping labels or capping the user's font size. The normal text setting is restored after inspection. Root screens retain their state; explicit active-screen changes stop monitoring and pause playback/cancel feedback when leaving a workspace. No transition animation is applied.
+
+The simulator build, ten hosted iOS tests (including font registration), ten core tests, and unsigned iPhone Release build pass. Physical-device ergonomics and a full VoiceOver audit remain follow-up validation in issue #5.

@@ -6,7 +6,7 @@ Validated locally on October 28, 2026 with Xcode 27.0 / iOS 27.0 simulator for t
 |---|---|
 | Swift Package core regression tests | 10 passed |
 | Python feedback gateway tests, with mocked provider calls | 6 passed |
-| Hosted iOS integration tests on iPhone 18 Pro, MediaPipe 1.0.0 | 9 passed |
+| Hosted iOS integration tests on iPhone 18 Pro, MediaPipe 1.0.0 | 10 passed |
 | Simulator app build | Passed |
 | Unsigned physical-device Release build | Passed with MediaPipe 1.0.0 |
 | Common credential-pattern scan of staged source and publication history | Passed before publication |
@@ -17,15 +17,15 @@ Core tests cover debounced start/stop transitions, duration from sensor timestam
 
 Gateway tests cover input validation, authorization before provider access, bounded request rate, response extraction contract, and upstream-error redaction. No live OpenAI calls or charges are made by the tests.
 
-The hosted iOS tests load the actual bundled Core ML model, run inference with the expected input shape, initialize MediaPipe while processing a synthetic video, verify portrait export dimensions and playable frames, test cancellation, verify annotation orientation, both analysis sides, out-of-frame rejection, and visibility filtering, round-trip saved record colors including legacy grayscale, preserve unreadable or invalid-duration history in a recovery copy, and expose older records through all-time history. A one-second synthetic video verifies distinct, chronologically ordered, bounded coaching frames without making a provider request. The frame regression failed before precise extraction/deduplication was added and passed afterward.
+A hosted font-registration test verifies that all four bundled Barlow typefaces are available through UIFont rather than relying on a system fallback. The hosted iOS tests load the actual bundled Core ML model, run inference with the expected input shape, initialize MediaPipe while processing a synthetic video, verify portrait export dimensions and playable frames, test cancellation, verify annotation orientation, both analysis sides, out-of-frame rejection, and visibility filtering, round-trip saved record colors including legacy grayscale, preserve unreadable or invalid-duration history in a recovery copy, and expose older records through all-time history. A one-second synthetic video verifies distinct, chronologically ordered, bounded coaching frames without making a provider request. The frame regression failed before precise extraction/deduplication was added and passed afterward.
 
 ## Manual smoke checks
 
-The refreshed app launches in the iPhone 18 Pro simulator. The timer dashboard, video import, settings, and tabs render; starting motion monitoring shows a clear unavailable-sensors message and returns to the stopped state. Camera-side selection, filming guidance, explicit import, and feedback Settings screens render. Updated screenshots are included in this repository.
+The typography-led redesign launches in the iPhone 18 Pro simulator. The open timing workspace, video import, settings, and custom navigation render; starting motion monitoring shows a clear unavailable-sensors message and returns to the stopped state. Camera-side selection, filming guidance, explicit import, and feedback Settings screens render. The iPad Pro 13-inch portrait/landscape layout and populated results selection were also inspected. The largest accessibility text size uses a horizontal text navigation rail; headings wrap and the workspace scrolls without reducing the requested font size. Normal text size was restored after verification. Updated screenshots are included in this repository; tablet history uses explicitly synthetic demo records in an isolated simulator, with original preferences backed up before seeding.
 
 ## Validation limits
 
-The first local iOS test invocation passed all assertions but spent ten minutes collecting simulator diagnostics after a runtime priority-inversion warning. The final nine-test run used `-collect-test-diagnostics never` and completed successfully; this disables extra failure diagnostics, not assertions. No athlete footage or calibrated reference measurements were used.
+The first local iOS test invocation passed all assertions but spent ten minutes collecting simulator diagnostics after a runtime priority-inversion warning. The earlier nine-test run and subsequent ten-test redesign runs used `-collect-test-diagnostics never` and completed successfully; this disables extra failure diagnostics, not assertions. No athlete footage or calibrated reference measurements were used.
 
 ## Remaining validation
 

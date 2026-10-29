@@ -116,7 +116,7 @@ struct TimingView: View {
             } else {
                 SprintChartView(viewModel: viewModel, selectedRecord: $selectedRecord).frame(height: 260)
                 VStack(spacing: 0) {
-                    HStack { FieldCaption("Recorded"); Spacer(); FieldCaption("Seconds") }.padding(.bottom, 12)
+                    HStack { FieldCaption("Recorded"); Spacer(); FieldCaption("Seconds") }.padding(.trailing, 52).padding(.bottom, 12)
                     Hairline()
                     ForEach(Array(records.sorted { $0.date > $1.date }.prefix(10))) { record in recordRow(record) }
                 }
@@ -150,18 +150,19 @@ struct TimingView: View {
         HStack(spacing: 8) {
             Button { selectedRecord = selectedRecord?.id == record.id ? nil : record } label: {
                 HStack(spacing: 12) {
-                    if selectedRecord?.id == record.id { Image(systemName: "arrow.right").foregroundStyle(SprintTheme.accent) }
                     Text(record.date, format: .dateTime.month(.abbreviated).day().hour().minute()).font(SprintType.detail)
+                        .foregroundStyle(selectedRecord?.id == record.id ? SprintTheme.accent : SprintTheme.ink)
                     Spacer(minLength: 12)
                     Text(String(format: "%.2f", record.time)).font(SprintType.display(30)).monospacedDigit()
                 }.frame(minHeight: 54).contentShape(Rectangle())
             }.buttonStyle(.plain).accessibilityAddTraits(selectedRecord?.id == record.id ? .isSelected : [])
-            if selectedRecord?.id == record.id {
-                Menu {
-                    Button("Delete sprint", systemImage: "trash", role: .destructive) { recordToDelete = record }
-                } label: { Image(systemName: "ellipsis").font(SprintType.label).frame(width: 44, height: 44) }
+            Menu {
+                Button("Delete sprint", systemImage: "trash", role: .destructive) { recordToDelete = record }
+            } label: { Image(systemName: "ellipsis").font(SprintType.label).frame(width: 44, height: 44) }
                 .tint(SprintTheme.ink).accessibilityLabel("Selected sprint options")
-            }
+                .opacity(selectedRecord?.id == record.id ? 1 : 0)
+                .allowsHitTesting(selectedRecord?.id == record.id)
+                .accessibilityHidden(selectedRecord?.id != record.id)
         }
     }
 
