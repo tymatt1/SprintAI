@@ -47,3 +47,9 @@ The green accent, subtitle removal, and always-visible recorded-times chart were
 ## Physical-device signing
 
 The legacy app identifier was rejected by the selected Personal Team. With `com.tymatt1.SprintAI`, Xcode successfully created a managed profile, signed the Debug build, and installed it on the connected iPhone 17. The first launch was blocked by the iPhone's developer-certificate trust setting; a successful app launch has not yet been verified. The selected signing team remains a local Xcode setting and is not published.
+
+## Icon and timing-boundary follow-up
+
+All 15 core tests pass, including new fixtures for score-crossing interpolation, separate acceleration/model gate crossings, dropout recovery, reset/gap handling, and invalid/out-of-order decisions. A signed generic-iOS Debug build passes with the new standard, dark, and tinted icon assets; `codesign --verify --deep --strict` also passes. The icon geometry was visually inspected and the 1024-pixel PNGs are opaque. Full iOS integration and backend suites were not rerun for these focused changes.
+
+These fixtures establish threshold arithmetic and confirmation behavior, not improved athlete timing accuracy. No new reference-timed athlete measurements were collected. The connected iPhone later became unavailable to the device service, so the updated build's on-device launch is not claimed.

@@ -5,7 +5,7 @@ import Foundation
 /// Owns sensor acquisition and inference on one serial queue.
 final class MotionClassifier {
     enum Update {
-        case prediction(isSprinting: Bool, timestamp: TimeInterval)
+        case prediction(SprintStateMachine.Decision)
         case interrupted
     }
 
@@ -19,6 +19,7 @@ final class MotionClassifier {
     }()
     private var activeSession: MotionSession?
     private var model: SprintDetectionModel?
+    private var input: MLMultiArray?
     private var samples: [[Double]] = []
     private var resampler = MotionResampler()
     // These values are coupled to the bundled trained model; do not retune independently.
@@ -46,6 +47,9 @@ final class MotionClassifier {
                 if self.model == nil {
                     self.model = try SprintDetectionModel(configuration: MLModelConfiguration())
                 }
+                if self.input == nil {
+                    self.input = try MLMultiArray(shape: [1, 50, 6], dataType: .double)
+                }
                 // Reconstruct gravity-inclusive acceleration to preserve the old input convention.
                 // DeviceMotion supplies synchronized acceleration/rotation with a monotonic timestamp.
                 let acceleration = motion.userAcceleration
@@ -62,8 +66,8 @@ final class MotionClassifier {
                 for sample in batch.samples {
                     self.samples.append(sample.values)
                     if self.samples.count > 50 { self.samples.removeFirst() }
-                    guard self.samples.count == 50, let model = self.model else { continue }
-                    let input = try MLMultiArray(shape: [1, 50, 6], dataType: .double)
+                    guard !session.isCancelled else { return }
+                    guard self.samples.count == 50, let model = self.model, let input = self.input else { continue }
                     for (i, sample) in self.samples.enumerated() {
                         for j in 0..<6 {
                             input[[0, NSNumber(value: i), NSNumber(value: j)]] = NSNumber(value: (sample[j] - self.means[j]) / self.deviations[j])
@@ -73,7 +77,10 @@ final class MotionClassifier {
                     let magnitude = self.samples.reduce(0.0) { sum, sample in
                         sum + sqrt(sample[0] * sample[0] + sample[1] * sample[1] + sample[2] * sample[2])
                     } / Double(self.samples.count)
-                    onUpdate(.success(.prediction(isSprinting: output > 0.9 && magnitude > 2, timestamp: sample.timestamp)))
+                    let decision = SprintStateMachine.Decision(score: output, meanAcceleration: magnitude, timestamp: sample.timestamp)
+                    guard decision.isValid else { throw MotionError.invalidPrediction }
+                    guard !session.isCancelled else { return }
+                    onUpdate(.success(.prediction(decision)))
                 }
             } catch {
                 onUpdate(.failure(error))
@@ -91,8 +98,13 @@ final class MotionClassifier {
     deinit { activeSession?.cancel(); manager.stopDeviceMotionUpdates() }
 
     private enum MotionError: LocalizedError {
-        case unavailable
-        var errorDescription: String? { "Motion sensors are unavailable. Run automatic timing on a physical iPhone." }
+        case unavailable, invalidPrediction
+        var errorDescription: String? {
+            switch self {
+            case .unavailable: return "Motion sensors are unavailable. Run automatic timing on a physical iPhone."
+            case .invalidPrediction: return "Motion classification returned an invalid value. Restart monitoring."
+            }
+        }
     }
 }
 

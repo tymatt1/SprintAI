@@ -20,6 +20,7 @@ final class SprintTimerViewModel: ObservableObject {
     private let defaults: UserDefaults
     private var stateMachine = SprintStateMachine()
     private var displayTimer: Timer?
+    private var activeSprintStart: TimeInterval?
     private var sessionID = UUID()
 
     init(defaults: UserDefaults = .standard, classifier: MotionClassifier = MotionClassifier()) {
@@ -51,9 +52,10 @@ final class SprintTimerViewModel: ObservableObject {
                     self.stateMachine.reset()
                     self.isSprinting = false
                     self.displayTimer?.invalidate()
+                    self.activeSprintStart = nil
                     self.timeElapsed = 0
-                case .success(.prediction(let sprinting, let timestamp)):
-                    self.handle(self.stateMachine.update(isSprinting: sprinting, timestamp: timestamp))
+                case .success(.prediction(let decision)):
+                    self.handle(self.stateMachine.update(decision))
                 }
             }
         }
@@ -65,6 +67,7 @@ final class SprintTimerViewModel: ObservableObject {
         classifier.stop()
         displayTimer?.invalidate()
         displayTimer = nil
+        activeSprintStart = nil
         stateMachine.reset()
         isRecording = false
         isSprinting = false
@@ -74,16 +77,21 @@ final class SprintTimerViewModel: ObservableObject {
         switch event {
         case .started(let timestamp):
             isSprinting = true
+            activeSprintStart = timestamp
+            let currentSession = sessionID
             displayTimer?.invalidate()
             timeElapsed = max(0, ProcessInfo.processInfo.systemUptime - timestamp)
             displayTimer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { [weak self] _ in
                 Task { @MainActor [weak self] in
-                    self?.timeElapsed = max(0, ProcessInfo.processInfo.systemUptime - timestamp)
+                    guard let self, self.isRecording, self.isSprinting,
+                          self.sessionID == currentSession, self.activeSprintStart == timestamp else { return }
+                    self.timeElapsed = max(0, ProcessInfo.processInfo.systemUptime - timestamp)
                 }
             }
         case .finished(let duration):
             displayTimer?.invalidate()
             displayTimer = nil
+            activeSprintStart = nil
             isSprinting = false
             timeElapsed = duration
             sprintTimes.append(SprintTimeRecord(time: duration, color: selectedColor))

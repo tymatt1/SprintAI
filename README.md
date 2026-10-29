@@ -8,7 +8,7 @@ SprintAI brings two training tools into one app: detect sprinting from a phone's
 
 ## Features
 
-- **Automatic timing:** timestamp-resampled motion inputs at 50 Hz, sliding-window inference, and debounced sprint detection with confirmation-delay correction.
+- **Automatic timing:** timestamp-resampled motion inputs at 50 Hz, sliding-window inference, and confirmed detection with interpolated threshold boundaries and confirmation-delay correction.
 - **Session history:** local sprint records, fastest/average summaries, color-coded charts, all-time history, point selection, and confirmed deletion.
 - **Race callouts:** “On your marks,” “Set,” and a randomized start signal.
 - **Video analysis:** local pose detection, skeleton overlays, and camera-side hip, knee, and torso measurements that follow playback without bridging detection gaps.
