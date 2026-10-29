@@ -4,7 +4,7 @@ Validated locally on October 28, 2026 with Xcode 27.0 / iOS 27.0 simulator for t
 
 | Check | Result |
 |---|---|
-| Swift Package core regression tests | 10 passed |
+| Swift Package core regression tests | 15 passed |
 | Python feedback gateway tests, with mocked provider calls | 6 passed |
 | Hosted iOS integration tests on iPhone 18 Pro, MediaPipe 1.0.0 | 10 passed |
 | Simulator app build | Passed |
@@ -13,7 +13,7 @@ Validated locally on October 28, 2026 with Xcode 27.0 / iOS 27.0 simulator for t
 
 ## Automated coverage
 
-Core tests cover debounced start/stop transitions, duration from sensor timestamps, immediate subsequent sprints, reset behavior, duplicate/out-of-order samples, degenerate joint geometry, short-clip frame selection, interpolated 50 Hz sample cadence, sensor-gap resets, first-decision boundaries, and nearest playback measurements across seeks and pose gaps.
+Core tests cover sustained start/stop transitions, hysteresis during an active sprint, quiet re-arming between bouts, short-bout rejection, duration from sensor timestamps, reset behavior, duplicate/out-of-order samples, degenerate joint geometry, short-clip frame selection, interpolated 50 Hz sample cadence, sensor-gap interruption, interpolated boundaries, and nearest playback measurements across seeks and pose gaps.
 
 Gateway tests cover input validation, authorization before provider access, bounded request rate, response extraction contract, and upstream-error redaction. No live OpenAI calls or charges are made by the tests.
 
@@ -53,3 +53,9 @@ The legacy app identifier was rejected by the selected Personal Team. With `com.
 All 15 core tests pass, including new fixtures for score-crossing interpolation, separate acceleration/model gate crossings, dropout recovery, reset/gap handling, and invalid/out-of-order decisions. A signed generic-iOS Debug build passes with the new standard, dark, and tinted icon assets; `codesign --verify --deep --strict` also passes. The icon geometry was visually inspected and the 1024-pixel PNGs are opaque. Full iOS integration and backend suites were not rerun for these focused changes.
 
 These fixtures establish threshold arithmetic and confirmation behavior, not improved athlete timing accuracy. No new reference-timed athlete measurements were collected. The connected iPhone later became unavailable to the device service, so the updated build's on-device launch is not claimed.
+
+## False-stop sensitivity fix
+
+The previous detector was replayed against alternating 100 ms high/low model-and-motion decisions: it saved 100 false sprints averaging approximately 84 ms. The revised defaults save no records from that trace. During an established sprint, forty repeated 100 ms dropouts are tolerated; a sustained stop produces one result. Additional fixtures check neutral-zone continuation, 500 ms quiet re-arming, discarded short bouts, interpolated boundaries excluding confirmation delay, reset, invalid decisions, and sensor gaps.
+
+All 15 core tests pass, and the final signed generic-iOS Debug build passes. The physical iPhone remains unavailable to the device service, so this verifies the logic against synthetic decision traces and app compilation; the user's continuous-running scenario still needs confirmation on the phone. No athlete-calibrated threshold or timing-accuracy claim is made. The model, normalization, sampling, saved history, and icon are unchanged.

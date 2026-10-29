@@ -9,13 +9,19 @@ This is the project's custom exported sprint classifier. Its embedded conversion
 - Requested sample frequency: 50 Hz; one input window spans approximately one second.
 - Acceleration is gravity-inclusive in g; rotation is in radians per second, matching the prior app convention.
 - Normalization constants are retained in `MotionClassifier`.
-- Output: first value of `Identity`; positive threshold `> 0.9`.
-- The previous mean acceleration-magnitude gate `> 2` is retained.
-- Confirmation: five positive decisions to start, three negatives to finish.
+- Output: first value of `Identity`; entry threshold `> 0.9`.
+- Entry also requires the previous mean acceleration-magnitude gate `> 2`.
+- Start confirmation: 200 ms of continuous entry evidence, measured in sensor time.
+- Continuation: score `> 0.7` and mean acceleration `> 1.6`. These lower thresholds add hysteresis around the entry gates.
+- Stop confirmation: 300 ms continuously below either continuation gate; brief dips are ignored.
+- Re-arm: 500 ms continuously below a continuation gate after a completed/discarded bout, including the confirmed stop interval. Renewed activity resets that quiet interval.
+- Detections shorter than 500 ms are discarded rather than saved.
 
 The refactor has **not** retrained, recalibrated, or revalidated this classifier. Core Motion delivery timing is requested rather than guaranteed. Timestamp-based linear interpolation places samples on a 50 Hz grid. A gap over 100 ms or invalid feature values clears the input window and active detection state; interpolation never bridges that gap. This preprocessing change needs athlete/device evaluation against the original training distribution.
 
-Confirmation still requires five positive / three negative decisions. The app now retains the continuous model score and mean acceleration, and linearly interpolates each threshold crossing between adjacent decisions. Starting requires both gates, so the later crossing wins; stopping requires either gate, so the earlier crossing wins. The confirmed event uses that first crossing rather than the later confirmation time. Without a preceding valid decision, or across a gap over 100 ms, it uses the current decision timestamp. This refines the position within a normal 20 ms interval; it does **not** establish millisecond physical accuracy or compensate for the approximately one-second model window. Scores are used as model outputs, not claimed to be calibrated probabilities.
+The earlier five-positive / three-negative policy could split continuous movement after just 40 ms of negative decisions and immediately trigger a new record. A synthetic alternating 100 ms high / 100 ms low trace produced 100 records averaging approximately 84 ms in that implementation. The revised sensor-time confirmation, hysteresis, quiet re-arm, and short-bout rejection prevent that trace from generating records; a related trace during an established sprint remains one continuous bout.
+
+The app retains the continuous model score and mean acceleration and interpolates threshold crossings between adjacent decisions. Starting requires both entry gates, so the later crossing wins; stopping requires either lower continuation gate, so the earlier crossing wins. Confirmation is timed from the first observed qualifying decision; the saved duration uses the interpolated boundary and excludes confirmation delay. A gap over 100 ms interrupts detection without saving an unfinished bout. This refines the position within a normal 20 ms interval; it does **not** establish millisecond physical accuracy or compensate for the approximately one-second model window. Scores are model outputs, not claimed to be calibrated probabilities. The new detection-policy defaults are conservative safeguards against fragmentation, not athlete-calibrated thresholds; physical-device confirmation remains necessary.
 
 The display can continue briefly while a stop is confirmed, then settle back to the saved sensor-time duration. Queued display ticks are guarded by recording session and sprint boundary so they cannot overwrite a finished result or another sprint. Reusing the model input buffer reduces per-inference allocation without changing its features or normalization. Invalid model outputs stop monitoring instead of being treated as a physical stop.
 

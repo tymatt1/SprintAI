@@ -50,10 +50,7 @@ final class SprintTimerViewModel: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 case .success(.interrupted):
                     self.stateMachine.reset()
-                    self.isSprinting = false
-                    self.displayTimer?.invalidate()
-                    self.activeSprintStart = nil
-                    self.timeElapsed = 0
+                    self.handle(.interrupted)
                 case .success(.prediction(let decision)):
                     self.handle(self.stateMachine.update(decision))
                 }
@@ -96,6 +93,12 @@ final class SprintTimerViewModel: ObservableObject {
             timeElapsed = duration
             sprintTimes.append(SprintTimeRecord(time: duration, color: selectedColor))
             saveSprintTimes()
+        case .discarded, .interrupted:
+            displayTimer?.invalidate()
+            displayTimer = nil
+            activeSprintStart = nil
+            isSprinting = false
+            timeElapsed = 0
         case nil:
             break
         }

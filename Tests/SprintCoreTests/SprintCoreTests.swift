@@ -2,70 +2,6 @@ import XCTest
 @testable import SprintCore
 
 final class SprintCoreTests: XCTestCase {
-    func testScoreCrossingsRefineBoundariesWithoutChangingConfirmation() {
-        var machine = SprintStateMachine(startThreshold: 2, stopThreshold: 2)
-        func decision(_ time: Double, _ score: Double) -> SprintStateMachine.Decision {
-            .init(score: score, meanAcceleration: 3, timestamp: time)
-        }
-        XCTAssertNil(machine.update(decision(1, 0.8)))
-        XCTAssertNil(machine.update(decision(1.02, 1)))
-        guard case .started(let start) = machine.update(decision(1.04, 1)) else { return XCTFail("Expected confirmed start") }
-        XCTAssertEqual(start, 1.01, accuracy: 1e-9)
-        XCTAssertNil(machine.update(decision(3, 1)))
-        XCTAssertNil(machine.update(decision(3.02, 0.8)))
-        guard case .finished(let duration) = machine.update(decision(3.04, 0.8)) else { return XCTFail("Expected confirmed stop") }
-        XCTAssertEqual(duration, 2, accuracy: 1e-9)
-    }
-
-    func testBothGatesMustCrossToStartAndEitherGateCanStop() {
-        var machine = SprintStateMachine(startThreshold: 1, stopThreshold: 1)
-        _ = machine.update(.init(score: 0.8, meanAcceleration: 1, timestamp: 0))
-        // Score crosses halfway; acceleration crosses three quarters of the interval.
-        guard case .started(let start) = machine.update(.init(score: 1, meanAcceleration: 7.0 / 3, timestamp: 0.02)) else {
-            return XCTFail("Expected start after both gates cross")
-        }
-        XCTAssertEqual(start, 0.015, accuracy: 1e-9)
-        _ = machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 1))
-        // Acceleration crosses first, at one third; score crosses at halfway.
-        guard case .finished(let duration) = machine.update(.init(score: 0.8, meanAcceleration: 0, timestamp: 1.02)) else {
-            return XCTFail("Expected stop on the first falling gate")
-        }
-        XCTAssertEqual(duration, 1 + 0.02 / 3 - start, accuracy: 1e-9)
-    }
-
-    func testBriefScoreDropoutDoesNotKeepAnEarlierFalseStopBoundary() {
-        var machine = SprintStateMachine(startThreshold: 1, stopThreshold: 2)
-        _ = machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 0))
-        XCTAssertNil(machine.update(.init(score: 0.8, meanAcceleration: 3, timestamp: 1)))
-        XCTAssertNil(machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 1.02)))
-        XCTAssertNil(machine.update(.init(score: 0.8, meanAcceleration: 3, timestamp: 1.04)))
-        guard case .finished(let duration) = machine.update(.init(score: 0.8, meanAcceleration: 3, timestamp: 1.06)) else {
-            return XCTFail("Expected a confirmed stop after dropout recovery")
-        }
-        XCTAssertEqual(duration, 1.03, accuracy: 1e-9)
-    }
-
-    func testRefinementDoesNotExtrapolateAcrossGapsOrReset() {
-        var machine = SprintStateMachine(startThreshold: 1, stopThreshold: 1)
-        _ = machine.update(.init(score: 0.8, meanAcceleration: 3, timestamp: 0))
-        XCTAssertEqual(machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 1)), .started(at: 1))
-        machine.reset()
-        XCTAssertEqual(machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 2)), .started(at: 2))
-    }
-
-    func testInvalidAndOutOfOrderScoresCannotChangeABoundary() {
-        var machine = SprintStateMachine(startThreshold: 1, stopThreshold: 1)
-        _ = machine.update(.init(score: 0.8, meanAcceleration: 3, timestamp: 1))
-        XCTAssertNil(machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 0.9)))
-        XCTAssertNil(machine.update(.init(score: .nan, meanAcceleration: 3, timestamp: 1.01)))
-        XCTAssertNil(machine.update(.init(score: 1.1, meanAcceleration: 3, timestamp: 1.01)))
-        XCTAssertNil(machine.update(.init(score: 1, meanAcceleration: .infinity, timestamp: 1.01)))
-        guard case .started(let start) = machine.update(.init(score: 1, meanAcceleration: 3, timestamp: 1.02)) else {
-            return XCTFail("Expected valid score crossing")
-        }
-        XCTAssertEqual(start, 1.01, accuracy: 1e-9)
-    }
-
     func testPlaybackSelectionHandlesSeekingAndDoesNotBridgePoseGaps() {
         let timestamps = [0.0, 0.04, 0.08, 2.0, 2.04]
         XCTAssertEqual(PlaybackSampleSelector.index(at: 2.03, in: timestamps), 4)
@@ -75,19 +11,6 @@ final class SprintCoreTests: XCTestCase {
         XCTAssertNil(PlaybackSampleSelector.index(at: -.infinity, in: timestamps))
         XCTAssertNil(PlaybackSampleSelector.index(at: -0.01, in: timestamps))
         XCTAssertNil(PlaybackSampleSelector.index(at: 0, in: []))
-    }
-
-    func testConfirmedBoundariesExcludeDebounceDelayAndIgnoreBriefDropout() {
-        var machine = SprintStateMachine(startThreshold: 3, stopThreshold: 2)
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 1))
-        XCTAssertNil(machine.update(isSprinting: false, timestamp: 1.02))
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 2))
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 2.02))
-        XCTAssertEqual(machine.update(isSprinting: true, timestamp: 2.04), .started(at: 2))
-        XCTAssertNil(machine.update(isSprinting: false, timestamp: 3))
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 3.02))
-        XCTAssertNil(machine.update(isSprinting: false, timestamp: 5))
-        XCTAssertEqual(machine.update(isSprinting: false, timestamp: 5.02), .finished(duration: 3))
     }
 
     func testResamplerInterpolatesJitterOnTrainingCadence() {
@@ -120,45 +43,6 @@ final class SprintCoreTests: XCTestCase {
         XCTAssertEqual(sampler.append(.init(timestamp: 5, values: Array(repeating: 2, count: 6))).samples.map(\.timestamp), [5])
         sampler.reset()
         XCTAssertEqual(sampler.append(.init(timestamp: 1, values: Array(repeating: 2, count: 6))).samples.map(\.timestamp), [1])
-    }
-
-    func testDebouncingAndDurationUseSensorTime() {
-        var machine = SprintStateMachine(startThreshold: 2, stopThreshold: 2)
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 10))
-        XCTAssertEqual(machine.update(isSprinting: true, timestamp: 10.02), .started(at: 10))
-        XCTAssertNil(machine.update(isSprinting: false, timestamp: 12))
-        guard case .finished(let duration) = machine.update(isSprinting: false, timestamp: 12.02) else {
-            return XCTFail("Expected one completed sprint")
-        }
-        XCTAssertEqual(duration, 2, accuracy: 0.000001)
-        XCTAssertNil(machine.update(isSprinting: false, timestamp: 12.04))
-    }
-
-    func testNewSprintCanStartImmediatelyWithoutAnOldReset() {
-        var machine = SprintStateMachine(startThreshold: 1, stopThreshold: 1)
-        XCTAssertEqual(machine.update(isSprinting: true, timestamp: 1), .started(at: 1))
-        XCTAssertEqual(machine.update(isSprinting: false, timestamp: 2), .finished(duration: 1))
-        XCTAssertEqual(machine.update(isSprinting: true, timestamp: 3), .started(at: 3))
-        XCTAssertEqual(machine.update(isSprinting: false, timestamp: 15), .finished(duration: 12))
-    }
-
-    func testResetDiscardsPartialAndActiveSprints() {
-        var machine = SprintStateMachine(startThreshold: 2, stopThreshold: 1)
-        _ = machine.update(isSprinting: true, timestamp: 1)
-        machine.reset()
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 2))
-        XCTAssertEqual(machine.update(isSprinting: true, timestamp: 3), .started(at: 2))
-        machine.reset()
-        XCTAssertNil(machine.update(isSprinting: false, timestamp: 4))
-    }
-
-    func testDuplicateAndOutOfOrderSamplesDoNotConfirmSprint() {
-        var machine = SprintStateMachine(startThreshold: 2)
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 2))
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 2))
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: 1))
-        XCTAssertNil(machine.update(isSprinting: true, timestamp: .nan))
-        XCTAssertEqual(machine.update(isSprinting: true, timestamp: 3), .started(at: 2))
     }
 
     func testAnglesRejectDegenerateAndNonfinitePoints() {
