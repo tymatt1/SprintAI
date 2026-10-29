@@ -44,7 +44,11 @@ If `xcodebuild` reports that only Command Line Tools are selected, choose Xcode 
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 ```
 
-Select the **SprintAI** scheme. For a physical device, select your own signing team. The bundle identifier remains `com.matthewt.SprintTimer` to preserve continuity with existing installations; change it if you need a separate development install.
+Select the **SprintAI** scheme and your connected iPhone. In **Signing & Capabilities**, keep **Automatically manage signing** enabled and select your own team. The app uses `com.tymatt1.SprintAI`; if Xcode says that identifier is unavailable to your team, choose a unique reverse-domain identifier for both Debug and Release.
+
+The previous identifier was `com.matthewt.SprintTimer`. The new identifier installs a separate app; existing records and Keychain settings are not migrated from the previous installation. Keep the previous app if you need its records.
+
+If a first launch reports **Developer App Certificate is not trusted**, open **Settings → General → VPN & Device Management** on the iPhone, select your developer certificate, and trust it before running again. Signing teams and certificates are developer-specific and are not included in the repository.
 
 Timing and local pose analysis work without server credentials. For video analysis, select one video up to 60 seconds long and 4096 pixels per side; short clips under 20 seconds filmed perpendicular to the athlete are recommended. Select the side facing the camera before import.
 

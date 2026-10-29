@@ -43,3 +43,7 @@ No hosted feedback service is deployed, and no new API credentials are provision
 ## Green-theme follow-up
 
 The green accent, subtitle removal, and always-visible recorded-times chart were checked with one simulator build and a brief phone/tablet review. The chart now appears before summaries, including its empty state, and defaults to all saved records. Existing per-record colors remain intact; the tablet screenshot uses the existing synthetic demonstration history. Full test suites were not rerun for this requested UI refinement.
+
+## Physical-device signing
+
+The legacy app identifier was rejected by the selected Personal Team. With `com.tymatt1.SprintAI`, Xcode successfully created a managed profile, signed the Debug build, and installed it on the connected iPhone 17. The first launch was blocked by the iPhone's developer-certificate trust setting; a successful app launch has not yet been verified. The selected signing team remains a local Xcode setting and is not published.
