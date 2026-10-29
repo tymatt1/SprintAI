@@ -36,7 +36,7 @@
 		9453E4BF309D6451D2F1DB2B /* AngleCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF6BD795839609F3B366AA /* AngleCalloutView.swift */; };
 		A175C522C03A3FF47CE2DA86 /* SprintTimeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7C996F8D1D4BCA8374527C /* SprintTimeRecord.swift */; };
 		A779F9CD26A11BB1EE88647E /* SprintAIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3451D42AE3CC975D2920D26C /* SprintAIApp.swift */; };
-		A8BEF3E6160868BB9CCAF8BB /* OutlinedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56949B66C372FA1D30ADC04B /* OutlinedViews.swift */; };
+		A8BEF3E6160868BB9CCAF8BB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56949B66C372FA1D30ADC04B /* DesignSystem.swift */; };
 		A98DA557F992ADE3153526F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F0E1D91F04840503C43F669 /* Foundation.framework */; };
 		AD0B791F8CFDA1DAE3BC57E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F0E1D91F04840503C43F669 /* Foundation.framework */; };
 		B0A9866BE5DD6F363570A8C4 /* AnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4FBD726AB49CA5953B1D12 /* AnalysisViewModel.swift */; };
@@ -90,7 +90,7 @@
 		4737EAB402FD886367DFB184 /* FeedbackInlinePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackInlinePanel.swift; sourceTree = "<group>"; };
 		49330570BEF8D0C232A0D9EC /* Pods-SprintAIIntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SprintAIIntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-SprintAIIntegrationTests/Pods-SprintAIIntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4CDF4F80524C257D7CAD5BD5 /* FeedbackFrameExtractor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FeedbackFrameExtractor.swift; sourceTree = "<group>"; };
-		56949B66C372FA1D30ADC04B /* OutlinedViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OutlinedViews.swift; sourceTree = "<group>"; };
+		56949B66C372FA1D30ADC04B /* DesignSystem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		5C14284F02414A0C10CFC3A2 /* AnalysisView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
 		5C19713F1C755EE6F78710C7 /* MotionClassifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MotionClassifier.swift; sourceTree = "<group>"; };
 		6147DD3C9C67071ADE0B9803 /* RaceAudioController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RaceAudioController.swift; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 		34786552E3EF89A436E0ACBC /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				56949B66C372FA1D30ADC04B /* OutlinedViews.swift */,
+				56949B66C372FA1D30ADC04B /* DesignSystem.swift */,
 			);
 			name = UI;
 			path = UI;
@@ -650,7 +650,7 @@
 				D41AA03E69EF689FC8A4FB6B /* TimingView.swift in Sources */,
 				CFC6A62BA0492E7382720053 /* SprintDetectionModel.mlpackage in Sources */,
 				0017A834A62C126E303F98E0 /* Color+Codable.swift in Sources */,
-				A8BEF3E6160868BB9CCAF8BB /* OutlinedViews.swift in Sources */,
+				A8BEF3E6160868BB9CCAF8BB /* DesignSystem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
